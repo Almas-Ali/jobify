@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock title %}
+
+{% block styles %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+{% endblock styles %}
+
+{% block scripts %}
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  let table = new DataTable(document.querySelector("#myTable"), {
+    "paging": true,
+    "ordering": true,
+    "info": true,
+    "searching": true,
+    "lengthChange": false,
+    "pageLength": 5,
+    "columnDefs": [{
+      "targets": [4],
+      "orderable": false
+    }],
+    "language": {
+      "paginate": {
+        "previous": "<i class='fas fa-angle-left'></i>",
+        "next": "<i class='fas fa-angle-right'></i>"
+      }
+    },    
+
+  });
+</script>
+{% endblock scripts %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="text-center" style="margin-top: 50px;">Jobify</h1>
+      <p class="text-center" style="margin-top: 20px; margin-bottom: 50px; font-size: 20px;">
+        A simple job board application for learning purposes.
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h3>Employeer List</h3>
+      <table class="table table-striped table-bordered mt-2" id="myTable">
+        <thead>
+          <tr>
+            <td>No.</td>
+            <th>Name</th>
+            <th>Company</th>
+            <th>Address</th>
+            <th class="text-center px-5"
+            >Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for employeer in employeers %}
+          <tr id="employeer_{{ forloop.counter }}">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ employeer.name }}</td>
+            <td>{{ employeer.company }}</td>
+            <td>{{ employeer.address }}</td>
+            <td>
+              <a href="#" class="text-decoration-none" data-bs-toggle="modal"
+                data-bs-target="#viewEmployeerModal_{{ forloop.counter }}">
+                <i class="fas fa-eye" style="color: green; margin-right: 10px;"></i>
+              </a>
+              <a href="{% url 'edit_employeer' employeer.pk %}" class="text-decoration-none">
+                <i class="fas fa-pencil" style="color: blue; margin-right: 10px;"></i>
+              </a>
+              <a href="#" class="text-decoration-none" data-bs-toggle="modal"
+                id="sweetAlertDelete_{{ forloop.counter }}">
+                <i class="fas fa-trash" style="color: red; margin-left: 10px;"></i>
+              </a>
+            </td>
+
+            <script>
+              document.getElementById("sweetAlertDelete_{{ forloop.counter }}").addEventListener("click", function () {
+                Swal.fire({
+                  title: 'Are you sure?',
+                  text: "You won't be able to revert this!",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Yes, delete it!',
+                  cancelButtonText: 'No, cancel!',
+                  reverseButtons: true
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    $.ajax({
+                      url: "{% url 'delete_employeer' employeer.pk %}",
+                      type: "POST",
+                      data: {
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                      },
+                      success: function (response) {
+                        document.getElementById("employeer_{{ forloop.counter }}").remove();
+                        Swal.fire(
+                          'Deleted!',
+                          'Your record has been deleted.',
+                          'success'
+                        )
+                      },
+                      error: function (xhr) {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Something went wrong!',
+                        })
+                      }
+                    })
+                  } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire(
+                      'Cancelled',
+                      'Delete operation has been cancelled.',
+                      'error'
+                    )
+                  }
+                })
+              });
+            </script>
+
+            <!-- View Enployeer -->
+            <div class="modal fade" id="viewEmployeerModal_{{ forloop.counter }}" data-bs-backdrop="static"
+              data-bs-keyboard="false" tabindex="-1" aria-labelledby="viewEmployeerModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="viewEmployeerModalLabel">Employeer details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>
+                      <strong>Name:</strong> {{ employeer.name }}<br>
+                      <strong>Email:</strong> {{ employeer.email }}<br>
+                      <strong>Phone:</strong> {{ employeer.phone }}<br>
+                      <strong>Company:</strong> {{ employeer.company }}<br>
+                      <strong>Address:</strong> {{ employeer.address }}<br>
+                      <strong>Website:</strong> {{ employeer.website }}<br>
+                    </p>
+                    <hr>
+                    <p>
+                      <strong>Created at:</strong> {{ employeer.created_at }}<br>
+                      <strong>Updated at:</strong> {{ employeer.updated_at }}<br>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Edit Enployeer -->
+            <!-- <div class="modal fade" id="editEmployeerModal_{{ forloop.counter }}" data-bs-backdrop="static" data-bs-keyboard="false"
+              tabindex="-1" aria-labelledby="editEmployeerModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editEmployeerModalLabel">Edit Employeer</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="{% url 'edit_employeer' employeer.pk %}" method="post">
+                      {% csrf_token %}
+                      {{ form.as_p }}
+                      <button type="submit" class="btn btn-primary w-100">Update</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+            <!-- Delete Enployeer -->
+            <div class="modal fade" id="deleteEmployeerModal_{{ forloop.counter }}" data-bs-backdrop="static"
+              data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteEmployeerModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteEmployeerModalLabel">Add Employeer</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="{% url 'delete_employeer' employeer.pk %}" method="post">
+                      {% csrf_token %}
+                      <div class="text-center">
+                        <button type="submit" class="btn btn-secondary px-2 w-25">Cancel</button>
+                        <button type="submit" class="btn btn-danger px-2 w-25">Delete</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEmployeerModal">
+        Add Employeer
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Add Enployeer -->
+<div class="modal fade" id="addEmployeerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="addEmployeerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="addEmployeerModalLabel">Add Employeer</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'add_employeer' %}" method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-primary w-100">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock content %}

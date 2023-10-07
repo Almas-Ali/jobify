@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Edit Employeer{% endblock title %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+      <div class="col-12 col-md-6 offset-md-3 p-3">
+        <h1>Edit Employeer</h1>
+        <form action="{% url 'edit_employeer' employeer.pk %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary w-100">Update</button>
+        </form>
+      </div>
+    </div>
+</div>
+
+
+{% endblock content %}
