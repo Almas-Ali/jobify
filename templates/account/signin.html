@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Signin{% endblock title %}
+{% block content %}
+
+<section class="banner-area relative" id="home">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row fullscreen d-flex align-items-center justify-content-center">
+            <div class="banner-content col-lg-4">
+                <form action="{% url 'account:signin' %}" method="post" class="serach-form-area">
+                    {% csrf_token %}
+                    <div class="row justify-content-center form-wrap p-5 rounded">
+                        <h2 class="text-white">Signin</h2>
+
+                        {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} my-2 rounded w-100 text-center">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+
+                        {% for element in form %}
+
+                        {% if element.name == 'username' %}
+                        <input type="email" name="{{ element.name }}" class="form-control my-1 rounded"
+                          placeholder="{{ element.label }}" required>
+                        {% endif %}
+
+                        {% if element.name == 'password' %}
+                        <input type="{{ element.field.widget.input_type }}" name="{{ element.name }}"
+                          class="form-control my-1 rounded" placeholder="{{ element.label }}" required>
+                        {% endif %}
+
+                        {% endfor %}
+
+
+                        <!-- <input type="email" name="email" class="form-control my-1 rounded" placeholder="Email" required>
+                        <input type="password" name="password" class="form-control my-1 rounded" placeholder="Password" required> -->
+                        <button type="submit" class="btn btn-info rounded">Signin</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
