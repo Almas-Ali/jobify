@@ -1,64 +1,65 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zxx" class="no-js">
 
   <head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="{% static 'core/img/fav.png' %}">
+    <!-- Author Meta -->
+    <meta name="author" content="codepixer">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock title %} - Jobify</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-      crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="{% static 'employeer/main.css' %}">
-    {% block styles %}{% endblock styles %}
+    <!-- Site Title -->
+    <title>Job Listing</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+    <!--
+			CSS
+			============================================= -->
+    <link rel="stylesheet" href="{% static 'core/css/linearicons.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
   </head>
 
   <body>
+    {% include 'navbar.html' %}
 
-    <nav class="navbar">
-      <a class="navbar-brand" href="{% url 'index' %}">
-        <i class="fas fa-home"></i>
-      </a>
-      <a href="#" class="navbar-brand">
-        <i class="fas fa-user"></i>
-      </a>
-      <a href="#" class="navbar-brand">
-        <i class="fas fa-sign-out-alt"></i>
-      </a>
-    </nav>
-
+    {% block content %}
+    {% endblock content %}
     
-  <!-- <div class="context">
-      <h1>Pure Css Animated Background</h1>
-    </div> -->
+    {% include 'footer.html' %}
 
-
-    <div class="area">
-      {% block content %}{% endblock content %}
-      <ul class="circles">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-      </ul>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    <script src="{% static 'core/js/vendor/jquery-2.2.4.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
       crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static 'core/js/vendor/bootstrap.min.js' %}"></script>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
+    <script src="{% static 'core/js/easing.min.js' %}"></script>
+    <script src="{% static 'core/js/hoverIntent.js' %}"></script>
+    <script src="{% static 'core/js/superfish.min.js' %}"></script>
+    <script src="{% static 'core/js/jquery.ajaxchimp.min.js' %}"></script>
+    <script src="{% static 'core/js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'core/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'core/js/jquery.sticky.js' %}"></script>
+    <script src="{% static 'core/js/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'core/js/parallax.min.js' %}"></script>
+    <script src="{% static 'core/js/mail-script.js' %}"></script>
+    <script src="{% static 'core/js/main.js' %}"></script>
     {% block scripts %}{% endblock scripts %}
-
   </body>
 
 </html>
