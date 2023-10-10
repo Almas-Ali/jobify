@@ -2,3 +2,6 @@
 __pycache__/
 *.sqlite3
 *.pyc
+
+templates/bootstrap-admin-template-free/
+templates/job-listing-master/
