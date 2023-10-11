@@ -16,15 +16,6 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20)
     bio = models.TextField()
-
-    user_type = models.CharField(
-        max_length=10,
-        choices=[
-            ('Applicant', 'Applicant'),
-            ('Employeer', 'Employeer'),
-        ],
-        default='Employeer'
-    )
     
     is_employer = models.BooleanField(default=False)
     is_applicant = models.BooleanField(default=False)
@@ -33,16 +24,7 @@ class User(AbstractUser):
     objects = UserManager()
     
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
-
-    def save(self, *args, **kwargs):
-        self.username = self.email.split('@')[0]
-        if self.user_type == 'Applicant':
-            self.is_applicant = True
-        elif self.user_type == 'Employeer':
-            self.is_employer = True
-            
-        return super().save(*args, **kwargs)
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     def __str__(self):
         return self.email
@@ -62,4 +44,3 @@ class User(AbstractUser):
 
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
-

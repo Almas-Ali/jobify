@@ -15,123 +15,26 @@
       </div>
       <div class="ms-3">
         <h6 class="mb-0">{{ request.user.get_full_name }}</h6>
-        <!-- {{ request.user.user_type }} -->
         <span>
           {% if request.user.is_admin %}
           Admin
-          {% endif %}
+          {% else %}
 
           {% if request.user.is_employeer %}
-          Employeer
+          Employer
           {% endif %}
 
           {% if request.user.is_applicant %}
           Applicant
           {% endif %}
+
+          {% endif %}
         </span>
       </div>
     </div>
     <div class="navbar-nav w-100">
-      <a href="{% url 'core:dashboard' %}" class="nav-item nav-link active">
-        <i class="fa fa-tachometer-alt me-2"></i>
-        Dashboard
-      </a>
-      {% if request.user.is_employer %}
+      <a href="{% url 'core:dashboard' %}" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
       <div class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-          <i class="fa fa-briefcase me-2"></i>
-          Applications
-        </a>
-        <div class="dropdown-menu bg-transparent border-0">
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-plus me-2"></i>
-            All Applications
-          </a>
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-times me-2"></i>
-            Rejected Applications
-          </a>
-        </div>
-      </div>
-      <div class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-          <i class="fa fa-briefcase me-2"></i>
-          Company
-        </a>
-        <div class="dropdown-menu bg-transparent border-0">
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-plus me-2"></i>
-            Create Company Profile
-          </a>
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-list me-2"></i>
-            All Companies
-          </a>
-        </div>
-      </div>
-      <div class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-          <i class="fa fa-briefcase me-2"></i>
-          Jobs
-        </a>
-        <div class="dropdown-menu bg-transparent border-0">
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-plus me-2"></i>
-            Post a Job
-          </a>
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-list me-2"></i>
-            All Posted Jobs
-          </a>
-        </div>
-      </div>
-      {% endif %}
-
-      {% if request.user.is_applicant %}
-      <div class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-          <i class="fa fa-envelope me-2"></i>
-          Applications
-        </a>
-        <div class="dropdown-menu bg-transparent border-0">
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-plus me-2"></i>
-            Sent Applications
-          </a>
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-times me-2"></i>
-            Rejected Applications
-          </a>
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-list me-2"></i>
-            All Applications
-          </a>
-        </div>
-      </div>
-      {% endif %}
-
-      <div class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-          <i class="fa fa-briefcase me-2"></i>
-          Settings
-        </a>
-        <div class="dropdown-menu bg-transparent border-0">
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-user me-2"></i>
-            Profile Settings
-          </a>
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-key me-2"></i>
-            Change Password
-          </a>
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-cog me-2"></i>
-            Privacy Settings
-          </a>
-        </div>
-      </div>
-
-      {% comment %} <div class="nav-item dropdown">
         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
             class="fa fa-laptop me-2"></i>Elements</a>
         <div class="dropdown-menu bg-transparent border-0">
@@ -153,7 +56,7 @@
           <a href="404.html" class="dropdown-item">404 Error</a>
           <a href="blank.html" class="dropdown-item">Blank Page</a>
         </div>
-      </div> {% endcomment %}
+      </div>
     </div>
   </nav>
 </div>

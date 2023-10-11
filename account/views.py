@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.contrib.auth import login
 
 from account.forms import SignUpForm
 
@@ -34,14 +33,11 @@ class SignupView(CreateView):
     model = get_user_model()
     template_name = 'account/signup.html'
     form_class = SignUpForm
-    success_url = reverse_lazy('core:dashboard')
-    success_message = 'Account created successfully'
-    redirect_authenticated_user = True
+    success_url = reverse_lazy('account:signin')
 
     def form_valid(self, form):
-        response = super().form_valid(form)
-        login(self.request, self.object)
-        return response
+        messages.success(self.request, 'Account created successfully')
+        return super().form_valid(form)
 
     def form_invalid(self, form):
         if form.errors:
@@ -49,4 +45,3 @@ class SignupView(CreateView):
                 for error in field.errors:
                     messages.error(self.request, error)
         return super().form_invalid(form)
-    
