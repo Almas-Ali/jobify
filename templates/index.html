@@ -285,265 +285,53 @@
           <li><a href="#">Intern</a></li>
           <li><a href="#">part Time</a></li>
         </ul>
+
+        {% for job in jobs %}
         <div class="single-post d-flex flex-row">
           <div class="thumb">
             <img src="{% static 'core/img/post.png' %}" alt="">
             <ul class="tags">
+              {% for tag in job.tags.all %}
               <li>
                 <a href="#">Art</a>
               </li>
-              <li>
-                <a href="#">Media</a>
-              </li>
-              <li>
-                <a href="#">Design</a>
-              </li>
+              {% endfor %}
             </ul>
           </div>
           <div class="details">
             <div class="title d-flex flex-row justify-content-between">
               <div class="titles">
                 <a href="single.html">
-                  <h4>Creative Art Designer</h4>
+                  <h4>{{ job.title }}</h4>
                 </a>
-                <h6>Premium Labels Limited</h6>
+                <h6>{{ job.company.name }}</h6>
               </div>
               <ul class="btns">
                 <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                <li><a href="#">Apply</a></li>
+                {% if job.is_closed %}
+                <li><a href="#" class="genric-btn danger circle arrow">Closed</a></li>
+                {% else %}
+                <li><a href="#" class="genric-btn success circle arrow">Apply</a></li>
+                {% endif %}
               </ul>
             </div>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc ididunt ut dolore
-              magna aliqua.
+              {{ job.description }}
             </p>
-            <h5>Job Nature: Full time</h5>
-            <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-            <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
+            <h5>Job Nature: {{ job.job_type }}</h5>
+            <p class="address"><span class="lnr lnr-map"></span> 
+              {{ job.location }}
+            </p>
+            <p class="address"><span class="lnr lnr-database"></span>
+              {% if job.salary == 0 %}
+              Negotiable
+              {% else %}
+              {{ job.salary }}
+              {% endif %}
+            </p>
           </div>
         </div>
-        <div class="single-post d-flex flex-row">
-          <div class="thumb">
-            <img src="{% static 'core/img/post.png' %}" alt="">
-            <ul class="tags">
-              <li>
-                <a href="#">Art</a>
-              </li>
-              <li>
-                <a href="#">Media</a>
-              </li>
-              <li>
-                <a href="#">Design</a>
-              </li>
-            </ul>
-          </div>
-          <div class="details">
-            <div class="title d-flex flex-row justify-content-between">
-              <div class="titles">
-                <a href="single.html">
-                  <h4>Creative Art Designer</h4>
-                </a>
-                <h6>Premium Labels Limited</h6>
-              </div>
-              <ul class="btns">
-                <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                <li><a href="#">Apply</a></li>
-              </ul>
-            </div>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc ididunt ut dolore
-              magna aliqua.
-            </p>
-            <h5>Job Nature: Full time</h5>
-            <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-            <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
-          </div>
-        </div>
-        <div class="single-post d-flex flex-row">
-          <div class="thumb">
-            <img src="{% static 'core/img/post.png' %}" alt="">
-            <ul class="tags">
-              <li>
-                <a href="#">Art</a>
-              </li>
-              <li>
-                <a href="#">Media</a>
-              </li>
-              <li>
-                <a href="#">Design</a>
-              </li>
-            </ul>
-          </div>
-          <div class="details">
-            <div class="title d-flex flex-row justify-content-between">
-              <div class="titles">
-                <a href="single.html">
-                  <h4>Creative Art Designer</h4>
-                </a>
-                <h6>Premium Labels Limited</h6>
-              </div>
-              <ul class="btns">
-                <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                <li><a href="#">Apply</a></li>
-              </ul>
-            </div>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc ididunt ut dolore
-              magna aliqua.
-            </p>
-            <h5>Job Nature: Full time</h5>
-            <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-            <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
-          </div>
-        </div>
-        <div class="single-post d-flex flex-row">
-          <div class="thumb">
-            <img src="{% static 'core/img/post.png' %}" alt="">
-            <ul class="tags">
-              <li>
-                <a href="#">Art</a>
-              </li>
-              <li>
-                <a href="#">Media</a>
-              </li>
-              <li>
-                <a href="#">Design</a>
-              </li>
-            </ul>
-          </div>
-          <div class="details">
-            <div class="title d-flex flex-row justify-content-between">
-              <div class="titles">
-                <a href="single.html">
-                  <h4>Creative Art Designer</h4>
-                </a>
-                <h6>Premium Labels Limited</h6>
-              </div>
-              <ul class="btns">
-                <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                <li><a href="#">Apply</a></li>
-              </ul>
-            </div>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc ididunt ut dolore
-              magna aliqua.
-            </p>
-            <h5>Job Nature: Full time</h5>
-            <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-            <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
-          </div>
-        </div>
-        <div class="single-post d-flex flex-row">
-          <div class="thumb">
-            <img src="{% static 'core/img/post.png' %}" alt="">
-            <ul class="tags">
-              <li>
-                <a href="#">Art</a>
-              </li>
-              <li>
-                <a href="#">Media</a>
-              </li>
-              <li>
-                <a href="#">Design</a>
-              </li>
-            </ul>
-          </div>
-          <div class="details">
-            <div class="title d-flex flex-row justify-content-between">
-              <div class="titles">
-                <a href="single.html">
-                  <h4>Creative Art Designer</h4>
-                </a>
-                <h6>Premium Labels Limited</h6>
-              </div>
-              <ul class="btns">
-                <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                <li><a href="#">Apply</a></li>
-              </ul>
-            </div>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc ididunt ut dolore
-              magna aliqua.
-            </p>
-            <h5>Job Nature: Full time</h5>
-            <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-            <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
-          </div>
-        </div>
-        <div class="single-post d-flex flex-row">
-          <div class="thumb">
-            <img src="{% static 'core/img/post.png' %}" alt="">
-            <ul class="tags">
-              <li>
-                <a href="#">Art</a>
-              </li>
-              <li>
-                <a href="#">Media</a>
-              </li>
-              <li>
-                <a href="#">Design</a>
-              </li>
-            </ul>
-          </div>
-          <div class="details">
-            <div class="title d-flex flex-row justify-content-between">
-              <div class="titles">
-                <a href="single.html">
-                  <h4>Creative Art Designer</h4>
-                </a>
-                <h6>Premium Labels Limited</h6>
-              </div>
-              <ul class="btns">
-                <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                <li><a href="#">Apply</a></li>
-              </ul>
-            </div>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc ididunt ut dolore
-              magna aliqua.
-            </p>
-            <h5>Job Nature: Full time</h5>
-            <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-            <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
-          </div>
-        </div>
-        <div class="single-post d-flex flex-row">
-          <div class="thumb">
-            <img src="{% static 'core/img/post.png' %}" alt="">
-            <ul class="tags">
-              <li>
-                <a href="#">Art</a>
-              </li>
-              <li>
-                <a href="#">Media</a>
-              </li>
-              <li>
-                <a href="#">Design</a>
-              </li>
-            </ul>
-          </div>
-          <div class="details">
-            <div class="title d-flex flex-row justify-content-between">
-              <div class="titles">
-                <a href="single.html">
-                  <h4>Creative Art Designer</h4>
-                </a>
-                <h6>Premium Labels Limited</h6>
-              </div>
-              <ul class="btns">
-                <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                <li><a href="#">Apply</a></li>
-              </ul>
-            </div>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc ididunt ut dolore
-              magna aliqua.
-            </p>
-            <h5>Job Nature: Full time</h5>
-            <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-            <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
-          </div>
-        </div>
+        {% endfor %}
 
         <a class="text-uppercase loadmore-btn mx-auto d-block" href="category.html">Load More job Posts</a>
 
@@ -552,27 +340,18 @@
         <div class="single-slidebar">
           <h4>Jobs by Location</h4>
           <ul class="cat-list">
-            <li><a class="justify-content-between d-flex" href="category.html">
-                <p>New York</p><span>37</span>
-              </a></li>
-            <li><a class="justify-content-between d-flex" href="category.html">
-                <p>Park Montana</p><span>57</span>
-              </a></li>
-            <li><a class="justify-content-between d-flex" href="category.html">
-                <p>Atlanta</p><span>33</span>
-              </a></li>
-            <li><a class="justify-content-between d-flex" href="category.html">
-                <p>Arizona</p><span>36</span>
-              </a></li>
-            <li><a class="justify-content-between d-flex" href="category.html">
-                <p>Florida</p><span>47</span>
-              </a></li>
-            <li><a class="justify-content-between d-flex" href="category.html">
-                <p>Rocky Beach</p><span>27</span>
-              </a></li>
-            <li><a class="justify-content-between d-flex" href="category.html">
-                <p>Chicago</p><span>17</span>
-              </a></li>
+            {% for location in locations %}
+            <li>
+              <a class="justify-content-between d-flex" href="category.html">
+                <p>
+                  {{ location.name }}
+                </p>
+                <span>
+                  {{ location.job_location.count }}
+                </span>
+              </a>
+            </li>
+            {% endfor %}
           </ul>
         </div>
 
@@ -630,27 +409,18 @@
         <div class="single-slidebar">
           <h4>Jobs by Category</h4>
           <ul class="cat-list">
-            <li><a class="justify-content-between d-flex" href="category.html">
-                <p>Technology</p><span>37</span>
-              </a></li>
-            <li><a class="justify-content-between d-flex" href="category.html">
-                <p>Media & News</p><span>57</span>
-              </a></li>
-            <li><a class="justify-content-between d-flex" href="category.html">
-                <p>Goverment</p><span>33</span>
-              </a></li>
-            <li><a class="justify-content-between d-flex" href="category.html">
-                <p>Medical</p><span>36</span>
-              </a></li>
-            <li><a class="justify-content-between d-flex" href="category.html">
-                <p>Restaurants</p><span>47</span>
-              </a></li>
-            <li><a class="justify-content-between d-flex" href="category.html">
-                <p>Developer</p><span>27</span>
-              </a></li>
-            <li><a class="justify-content-between d-flex" href="category.html">
-                <p>Accounting</p><span>17</span>
-              </a></li>
+            {% for category in categories %}
+            <li>
+              <a class="justify-content-between d-flex" href="category.html">
+                <p>
+                  {{ category.name }}
+                </p>
+                <span>
+                  {{ category.job_category.count }}
+                </span>
+              </a>
+            </li>
+            {% endfor %}             
           </ul>
         </div>
 

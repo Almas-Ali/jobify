@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 
-from employeer.models import Employeer
-from employeer.forms import EmployeerForm
+# from employeer.models import Employeer
+# from employeer.forms import EmployeerForm
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
