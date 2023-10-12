@@ -1,0 +1,35 @@
+<header id="header" id="home">
+    <div class="container">
+        <div class="row align-items-center justify-content-between d-flex">
+            <div id="logo">
+                <a href="{% url 'core:home' %}"><img src="img/logo.png" alt="" title="" /></a>
+            </div>
+            <nav id="nav-menu-container">
+                <ul class="nav-menu">
+                    <li class="menu-active"><a href="{% url 'core:home' %}">Home</a></li>
+                    <li><a href="{% url 'core:about' %}">About Us</a></li>
+                    <li><a href="category.html">Category</a></li>
+                    <li><a href="price.html">Price</a></li>
+                    <li><a href="blog-home.html">Blog</a></li>
+                    <li><a href="{% url 'core:contact' %}">Contact</a></li>
+                    <li class="menu-has-children"><a href="">Pages</a>
+                        <ul>
+                            <li><a href="elements.html">elements</a></li>
+                            <li><a href="search.html">search</a></li>
+                            <li><a href="single.html">single</a></li>
+                        </ul>
+                    </li>
+                    {% if not request.user.is_authenticated %}
+                    <li><a class="ticker-btn" href="{% url 'account:signup' %}">Signup</a></li>
+                    <li><a class="ticker-btn" href="{% url 'account:signin' %}">Signin</a></li>
+                    {% else %}
+                    
+                    <li><a class="ticker-btn" href="{% url 'core:dashboard' %}">Dashboard</a></li>
+
+                    <li><a class="ticker-btn" href="{% url 'account:signout' %}">Signout</a></li>
+                    {% endif %}
+                </ul>
+            </nav><!-- #nav-menu-container -->
+        </div>
+    </div>
+</header><!-- #header -->

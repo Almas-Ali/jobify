@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Signup{% endblock title %}
+{% block styles %}
+
+<style type="text/css">
+    .errorlist li {
+        color: red !important;
+    }
+</style>
+
+{% endblock styles %}
+{% block scripts %}
+
+<script>
+    let labels = document.getElementsByTagName('label');
+
+    for (let i = 0; i < labels.length; i++) {
+        labels[i].style.display = 'none';
+    }
+</script>
+
+{% endblock scripts %}
+{% block content %}
+
+<section class="banner-area relative" id="home">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row fullscreen d-flex align-items-center justify-content-center">
+            <div class="banner-content col-lg-4 my-auto">
+                <form action="{% url 'account:signup' %}" method="post" class="serach-form-area">
+                    {% csrf_token %}
+                    <div class="row justify-content-center form-wrap p-5 rounded">
+                        <h2 class="text-white">Signup</h2>
+
+                        {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} my-2 rounded w-100 text-center">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                        
+                        {{ form }}
+
+                        <!-- {% for element in form %}
+
+                        {% comment %} {% if element.name == 'username' %}
+                        <input type="email" name="{{ element.name }}" class="form-control my-1 rounded"
+                          placeholder="{{ element.label }}" required>
+                        {% endif %} {% endcomment %}
+
+                        <input type="{{ element.field.widget.input_type }}" name="{{ element.name }}"
+                          class="form-control my-1 rounded" placeholder="{{ element.label }}" required>
+
+                        
+                        {% if element.name == 'user_type' %}
+                            <select name="user_type" id="user_type">
+                                opt
+                            </select>
+                        {% endif %}
+  
+
+                        {% endfor %} -->
+
+                        <button type="submit" class="btn btn-info mt-1 rounded">Signup</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

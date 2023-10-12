@@ -1,4 +1,7 @@
-__pycache__
+.venv/
+__pycache__/
 *.sqlite3
 *.pyc
-.venv
+
+templates/bootstrap-admin-template-free/
+templates/job-listing-master/
