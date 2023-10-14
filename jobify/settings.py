@@ -50,6 +50,8 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'account.User'
+# login url 
+LOGIN_URL = 'account:signin'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -59,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Custom middleware
+    'account.middleware.RestrictSignInSignUpMiddleware',
 ]
 
 ROOT_URLCONF = 'jobify.urls'

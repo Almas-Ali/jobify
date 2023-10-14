@@ -1,0 +1,29 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}Companies{% endblock title %}
+{% block content %}
+
+
+{% if request.user.is_employer %}
+<h2 class="m-3 text-center">All Companies</h2>
+<div class="m-3 col-md-4">
+    {% for company in companies %}
+    <div class="card" style="width: 18rem;">
+        <img src="{{ company.logo.url }}" class="card-img-top" alt="{{ company.name }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ company.name }}</h5>
+            <p class="card-text">{{ company.description }}</p>
+            <p class="card-text">{{ company.website }}</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if request.user.is_applicant %}
+
+{% endif %}
+
+
+{% endblock content %}

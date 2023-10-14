@@ -19,24 +19,52 @@
         <span>
           {% if request.user.is_admin %}
           Admin
-          {% endif %}
+          {% else %}
 
-          {% if request.user.is_employeer %}
+          {% if request.user.is_employer %}
           Employeer
           {% endif %}
 
           {% if request.user.is_applicant %}
           Applicant
           {% endif %}
+
+          {% endif %}
+
+
         </span>
       </div>
     </div>
     <div class="navbar-nav w-100">
-      <a href="{% url 'core:dashboard' %}" class="nav-item nav-link active">
+      <a href="{% url 'core:dashboard' %}" class="nav-item nav-link 
+      {% if request.resolver_match.url_name == 'dashboard' %}
+      active
+      {% endif %}
+      ">
         <i class="fa fa-tachometer-alt me-2"></i>
         Dashboard
       </a>
       {% if request.user.is_employer %}
+      <div class="nav-item dropdown">
+        <a href="#" class="nav-link dropdown-toggle
+        {% if request.resolver_match.url_name == 'applicants_list' %}
+        active
+        {% endif %}
+        " data-bs-toggle="dropdown">
+          <i class="fa fa-briefcase me-2"></i>
+          Applicants
+        </a>
+        <div class="dropdown-menu bg-transparent border-0">
+          <a href="{% url 'applicant:applicants_list' %}" class="dropdown-item
+          {% if request.resolver_match.url_name == 'applicants_list' %}
+          active
+          {% endif %}
+          ">
+            <i class="fa fa-plus me-2"></i>
+            All Applicants
+          </a>
+        </div>
+      </div>
       <div class="nav-item dropdown">
         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
           <i class="fa fa-briefcase me-2"></i>
@@ -54,34 +82,74 @@
         </div>
       </div>
       <div class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+        <a href="#" class="nav-link dropdown-toggle
+        {% if request.resolver_match.url_name == 'create_company' or request.resolver_match.url_name == 'companies' %}
+        active
+        {% endif %}
+        " data-bs-toggle="dropdown">
           <i class="fa fa-briefcase me-2"></i>
           Company
         </a>
         <div class="dropdown-menu bg-transparent border-0">
-          <a href="#" class="dropdown-item">
+          <a href="{% url 'employeer:create_company' %}" class="dropdown-item
+          {% if request.resolver_match.url_name == 'create_company' %}
+          active
+          {% endif %}
+          ">
             <i class="fa fa-plus me-2"></i>
             Create Company Profile
           </a>
-          <a href="#" class="dropdown-item">
+          <a href="{% url 'employeer:companies' %}" class="dropdown-item
+          {% if request.resolver_match.url_name == 'companies' %}
+          active
+          {% endif %}
+          ">
             <i class="fa fa-list me-2"></i>
             All Companies
           </a>
         </div>
       </div>
       <div class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+        <a href="#" class="nav-link dropdown-toggle
+        {% if request.resolver_match.url_name == 'add_job' or request.resolver_match.url_name == 'jobs' or request.resolver_match.url_name == 'locations' or request.resolver_match.url_name == 'tags' %}
+        active
+        {% endif %}
+        " data-bs-toggle="dropdown">
           <i class="fa fa-briefcase me-2"></i>
           Jobs
         </a>
         <div class="dropdown-menu bg-transparent border-0">
-          <a href="#" class="dropdown-item">
+          <a href="{% url 'employeer:add_job' %}" class="dropdown-item
+          {% if request.resolver_match.url_name == 'add_job' %}
+          active
+          {% endif %}
+          ">
             <i class="fa fa-plus me-2"></i>
             Post a Job
           </a>
-          <a href="#" class="dropdown-item">
+          <a href="{% url 'employeer:jobs' %}" class="dropdown-item
+          {% if request.resolver_match.url_name == 'jobs' %}
+          active
+          {% endif %}
+          ">
             <i class="fa fa-list me-2"></i>
             All Posted Jobs
+          </a>
+          <a href="{% url 'employeer:locations' %}" class="dropdown-item
+          {% if request.resolver_match.url_name == 'locations' %}
+          active
+          {% endif %}
+          ">
+            <i class="fa fa-list me-2"></i>
+            Locations
+          </a>
+          <a href="{% url 'employeer:tags' %}" class="dropdown-item
+          {% if request.resolver_match.url_name == 'tags' %}
+          active
+          {% endif %}
+          ">
+            <i class="fa fa-list me-2"></i>
+            Tags
           </a>
         </div>
       </div>

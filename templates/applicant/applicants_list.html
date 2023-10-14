@@ -1,0 +1,74 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}Applicants List{% endblock title %}
+
+{% block styles %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
+{% endblock styles %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"
+  integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  $(document).ready(function () {
+    $('#applicants_table').DataTable();
+  });
+</script>
+{% endblock scripts %}
+
+{% block content %}
+
+
+{% if request.user.is_employer %}
+<h2 class="text-center my-4">
+  Applicants List
+</h2>
+<div class="mx-2 my-2">
+  <table id="applicants_table" class="table">
+    <thead>
+      <tr>
+        <th>Sno</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for applicant in applicants %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ applicant.get_full_name }}</td>
+        <td>{{ applicant.email }}</td>
+        <td>
+          <div class="row">
+            {% if applicant.is_suspend %}
+            <form action="{% url 'applicant:applicant_unsuspend' applicant.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-success">Unsuspend</button>
+            </form>
+            {% else %}
+            <form action="{% url 'applicant:applicant_suspend' applicant.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Suspend</button>
+            </form>
+            {% endif %}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{% if request.user.is_applicant %}
+
+{% endif %}
+
+
+{% endblock content %}

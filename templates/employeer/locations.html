@@ -1,0 +1,95 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}Locations{% endblock title %}
+
+{% block styles %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
+{% endblock styles %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"
+  integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function () {
+        $('#applicants_table').DataTable();
+    });
+</script>
+{% endblock scripts %}
+
+{% block content %}
+
+
+{% if request.user.is_employer %}
+<h2 class="text-center my-4">
+    Locations
+</h2>
+<div class="mx-2 my-2">
+    <a href="#" type="button" class="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#addLocation">
+        Add Location
+    </a>
+    <table id="applicants_table" class="table">
+        <thead>
+            <tr>
+                <th>Sno</th>
+                <th>Location</th>
+                <th>Slug</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for location in locations %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ location.name }}</td>
+                <td>{{ location.slug }}</td>
+                <td>
+                    <div class="d-flex">
+                        <form action="{% url 'employeer:locations' %}" method="post" class="ms-2">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Edit</button>
+                        </form>
+                        <form action="{% url 'employeer:locations' %}" method="post" class="ms-2">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div class="modal fade" id="addLocation" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
+  aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleId">Add Location</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary w-100">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% if request.user.is_applicant %}
+
+{% endif %}
+
+
+{% endblock content %}

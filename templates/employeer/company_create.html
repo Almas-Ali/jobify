@@ -1,0 +1,23 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}Create Company{% endblock title %}
+{% block content %}
+
+
+  {% if request.user.is_employer %}
+  <h2 class="m-3 text-center">Create Company</h2>
+    <div class="m-3">
+        <form action="{% url 'employeer:create_company' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+  {% endif %}
+
+  {% if request.user.is_applicant %}
+
+  {% endif %}
+
+
+{% endblock content %}
