@@ -5,5 +5,7 @@ from applicant import views
 app_name = 'applicant'
 
 urlpatterns = [
-    
+    path('list', views.ApplicantsView.as_view(), name='applicants_list'),
+    path('suspend/<int:id>', views.ApplicantSuspendView.as_view(), name='applicant_suspend'),
+    path('unsuspend/<int:id>', views.ApplicantUnsuspendView.as_view(), name='applicant_unsuspend'),
 ]

@@ -12,6 +12,8 @@ from account.forms import SignUpForm
 class SigninView(LoginView):
     template_name = 'account/signin.html'
     redirect_authenticated_user = True
+    # if we are loged in and try to access login page then it will redirect to dashboard
+    
     
     def get_success_url(self):
         return reverse_lazy('core:home')

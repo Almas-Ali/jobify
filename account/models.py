@@ -7,6 +7,7 @@ from account.managers import UserManager
 class User(AbstractUser):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='profile/', blank=True)
 
     address = models.CharField(max_length=100)
     city = models.CharField(max_length=50)
