@@ -76,12 +76,12 @@ class Location(BaseModel):
 class Job(BaseModel):
     employer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='employer_jobs') # One employer can have multiple jobs and one job can have only one employer
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='company_jobs') # One company can have multiple jobs and one job can have only one company
-    applicants = models.ManyToManyField(get_user_model(), related_name='job_applicants') # One applicant can apply for multiple jobs and one job can have multiple applicants
+    applicants = models.ManyToManyField(get_user_model(), related_name='job_applicants', blank=True) # One applicant can apply for multiple jobs and one job can have multiple applicants
     tags = models.ManyToManyField(Tag, related_name='job_tags') # One tag can have multiple jobs and one job can have multiple tags
 
     title = models.CharField(max_length=100, default='') # Job Title
     description = models.TextField(max_length=1000, default='') # Job Description
-    location = models.OneToOneField(Location, on_delete=models.CASCADE, related_name='job_location') # One location can have multiple jobs and one job can have only one location
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='location_jobs') # One location can have multiple jobs and one job can have only one location
     applications = models.ManyToManyField(
         'job.Application', related_name='job_applications', 
         blank=True
@@ -120,8 +120,8 @@ class Job(BaseModel):
     def __str__(self):
         return self.title
 
-    # def get_absolute_url(self):
-    #     return reverse('core:job_detail', kwargs={'slug': self.slug})
+    def get_absolute_url(self):
+        return reverse('core:job_detail', kwargs={'slug': self.slug})
 
 
 class Application(BaseModel):

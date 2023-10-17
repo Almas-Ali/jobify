@@ -28,10 +28,13 @@
               <div class="default-select" id="default-selects"">
 										  <select>
 											  <option value=" 1">Select area</option>
-                <option value="2">Dhaka</option>
+                <!-- <option value="2">Dhaka</option>
                 <option value="3">Rajshahi</option>
                 <option value="4">Barishal</option>
-                <option value="5">Noakhali</option>
+                <option value="5">Noakhali</option> -->
+                {% for location in locations %}
+                <option value="{{ location.id }}">{{ location.name }}</option>
+                {% endfor %}
                 </select>
               </div>
             </div>
@@ -39,10 +42,13 @@
               <div class="default-select" id="default-selects2">
                 <select>
                   <option value="1">All Category</option>
-                  <option value="2">Medical</option>
+                  <!-- <option value="2">Medical</option>
                   <option value="3">Technology</option>
                   <option value="4">Goverment</option>
-                  <option value="5">Development</option>
+                  <option value="5">Development</option> -->
+                  {% for category in categories %}
+                  <option value="{{ category.id }}">{{ category.name }}</option>
+                  {% endfor %}
                 </select>
               </div>
             </div>
@@ -53,8 +59,16 @@
             </div>
           </div>
         </form>
-        <p class="text-white"> <span>Search by tags:</span> Tecnology, Business, Consulting, IT Company, Design,
-          Development</p>
+        <p class="text-white"> <span>Search by tags:</span> 
+          {% for tag in tags %}
+          <a href="#" class="text-light">
+            <span class="badge badge-primary text-light p-2">
+              <span class="lnr lnr-tag"></span>
+              {{ tag.name }}
+            </span>
+          </a>
+          {% endfor %}
+        </p>
       </div>
     </div>
   </div>
@@ -288,12 +302,13 @@
 
         {% for job in jobs %}
         <div class="single-post d-flex flex-row">
-          <div class="thumb">
-            <img src="{% static 'core/img/post.png' %}" alt="">
+          <div class="thumb mr-2">
+            <img src="{{ job.image.url }}" alt="{{ job.title }}" width="100" height="100">
             <ul class="tags">
               {% for tag in job.tags.all %}
               <li>
-                <a href="#">Art</a>
+                <span class="lnr lnr-tag"></span>
+                {{ tag.name }}
               </li>
               {% endfor %}
             </ul>
@@ -301,8 +316,8 @@
           <div class="details">
             <div class="title d-flex flex-row justify-content-between">
               <div class="titles">
-                <a href="single.html">
-                  <h4>{{ job.title }}</h4>
+                <a href="{{ job.get_absolute_url }}">
+                  <h4 class="text-wrap">{{ job.title }}</h4>
                 </a>
                 <h6>{{ job.company.name }}</h6>
               </div>
@@ -319,10 +334,18 @@
               {{ job.description }}
             </p>
             <h5>Job Nature: {{ job.job_type }}</h5>
-            <p class="address"><span class="lnr lnr-map"></span> 
+            <p class="address"><span class="lnr lnr-map"></span>
               {{ job.location }}
             </p>
-            <p class="address"><span class="lnr lnr-database"></span>
+            <p class="address"><span class="lnr lnr-calendar-full"></span>
+              
+              {% if job.experience == 0 %}
+              No Experience
+              {% else %}
+              {{ job.experience }} Years Experience
+              {% endif %}
+            </p>
+            <p class="address"><i class="fa fa-money"></i>
               {% if job.salary == 0 %}
               Negotiable
               {% else %}
@@ -336,152 +359,7 @@
         <a class="text-uppercase loadmore-btn mx-auto d-block" href="category.html">Load More job Posts</a>
 
       </div>
-      <div class="col-lg-4 sidebar">
-        <div class="single-slidebar">
-          <h4>Jobs by Location</h4>
-          <ul class="cat-list">
-            {% for location in locations %}
-            <li>
-              <a class="justify-content-between d-flex" href="category.html">
-                <p>
-                  {{ location.name }}
-                </p>
-                <span>
-                  {{ location.job_location.count }}
-                </span>
-              </a>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-
-        <div class="single-slidebar">
-          <h4>Top rated job posts</h4>
-          <div class="active-relatedjob-carusel">
-            <div class="single-rated">
-              <img class="img-fluid" src="{% static 'core/img/r1.jpg' %}" alt="">
-              <a href="single.html">
-                <h4>Creative Art Designer</h4>
-              </a>
-              <h6>Premium Labels Limited</h6>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc ididunt ut dolore
-                magna aliqua.
-              </p>
-              <h5>Job Nature: Full time</h5>
-              <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-              <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
-              <a href="#" class="btns text-uppercase">Apply job</a>
-            </div>
-            <div class="single-rated">
-              <img class="img-fluid" src="{% static 'core/img/r1.jpg' %}" alt="">
-              <a href="single.html">
-                <h4>Creative Art Designer</h4>
-              </a>
-              <h6>Premium Labels Limited</h6>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc ididunt ut dolore
-                magna aliqua.
-              </p>
-              <h5>Job Nature: Full time</h5>
-              <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-              <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
-              <a href="#" class="btns text-uppercase">Apply job</a>
-            </div>
-            <div class="single-rated">
-              <img class="img-fluid" src="{% static 'core/img/r1.jpg' %}" alt="">
-              <a href="single.html">
-                <h4>Creative Art Designer</h4>
-              </a>
-              <h6>Premium Labels Limited</h6>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporinc ididunt ut dolore
-                magna aliqua.
-              </p>
-              <h5>Job Nature: Full time</h5>
-              <p class="address"><span class="lnr lnr-map"></span> 56/8, Panthapath Dhanmondi Dhaka</p>
-              <p class="address"><span class="lnr lnr-database"></span> 15k - 25k</p>
-              <a href="#" class="btns text-uppercase">Apply job</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="single-slidebar">
-          <h4>Jobs by Category</h4>
-          <ul class="cat-list">
-            {% for category in categories %}
-            <li>
-              <a class="justify-content-between d-flex" href="category.html">
-                <p>
-                  {{ category.name }}
-                </p>
-                <span>
-                  {{ category.job_category.count }}
-                </span>
-              </a>
-            </li>
-            {% endfor %}             
-          </ul>
-        </div>
-
-        <div class="single-slidebar">
-          <h4>Carrer Advice Blog</h4>
-          <div class="blog-list">
-            <div class="single-blog " style="background:#000 url({% static 'core/img/blog1.jpg' %});">
-              <a href="single.html">
-                <h4>Home Audio Recording <br>
-                  For Everyone</h4>
-              </a>
-              <div class="meta justify-content-between d-flex">
-                <p>
-                  02 Hours ago
-                </p>
-                <p>
-                  <span class="lnr lnr-heart"></span>
-                  06
-                  <span class="lnr lnr-bubble"></span>
-                  02
-                </p>
-              </div>
-            </div>
-            <div class="single-blog " style="background:#000 url({% static 'core/img/blog2.jpg' %});">
-              <a href="single.html">
-                <h4>Home Audio Recording <br>
-                  For Everyone</h4>
-              </a>
-              <div class="meta justify-content-between d-flex">
-                <p>
-                  02 Hours ago
-                </p>
-                <p>
-                  <span class="lnr lnr-heart"></span>
-                  06
-                  <span class="lnr lnr-bubble"></span>
-                  02
-                </p>
-              </div>
-            </div>
-            <div class="single-blog " style="background:#000 url({% static 'core/img/blog1.jpg' %});">
-              <a href="single.html">
-                <h4>Home Audio Recording <br>
-                  For Everyone</h4>
-              </a>
-              <div class="meta justify-content-between d-flex">
-                <p>
-                  02 Hours ago
-                </p>
-                <p>
-                  <span class="lnr lnr-heart"></span>
-                  06
-                  <span class="lnr lnr-bubble"></span>
-                  02
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
+      {% include 'sidebar.html' with jobs=jobs categories=categories locations=locations tags=tags %}
     </div>
   </div>
 </section>

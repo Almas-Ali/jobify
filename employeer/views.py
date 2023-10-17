@@ -2,6 +2,7 @@ from django.views.generic import CreateView, ListView
 from django.views.generic.base import TemplateView
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 from job.models import Company, Job, Location, Tag
 from employeer.forms import CompanyForm, JobForm, LocationForm, TagForm
@@ -16,9 +17,12 @@ class CreateCompanyView(LoginRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         form = CompanyForm(request.POST, request.FILES)
         if form.is_valid():
+            form.instance.user = self.request.user
             form.save()
+            messages.success(request, 'Company created successfully')
             return redirect('employeer:create_company')
         else:
+            messages.error(request, 'Company creation failed')
             return render(request, 'employeer/company_create.html', {'form': form})
 
 
@@ -27,17 +31,17 @@ class CompaniesView(LoginRequiredMixin, ListView):
     template_name = 'employeer/companies.html'
     context_object_name = 'companies'
 
-    def get_queryset(self):
+    def get_queryset(self, *args, **kwargs):
         return Company.objects.filter(user=self.request.user)
 
 
 class JobsView(LoginRequiredMixin, ListView):
     model = Job
     template_name = 'employeer/jobs.html'
-    context_object_name = 'companies'
+    context_object_name = 'jobs'
 
-    def get_queryset(self):
-        return Job.objects.filter(user=self.request.user)
+    def get_queryset(self, *args, **kwargs):
+        return Job.objects.filter(employer=self.request.user)
 
 
 class AddJobView(LoginRequiredMixin, CreateView):
@@ -49,9 +53,13 @@ class AddJobView(LoginRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         form = JobForm(request.POST, request.FILES)
         if form.is_valid():
+            form.instance.employer = request.user
+            # form.instance
             form.save()
+            messages.success(request, 'Job created successfully')
             return redirect('employeer:add_job')
         else:
+            messages.error(request, 'Job creation failed')
             return render(request, 'employeer/add_job.html', {'form': form})
 
 
@@ -67,8 +75,10 @@ class LocationsView(LoginRequiredMixin, TemplateView):
         form = LocationForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Location created successfully')
             return redirect('employeer:locations')
         else:
+            messages.error(request, 'Location creation failed')
             return render(request, 'employeer/locations.html', {'form': form})
 
     def get(self, request, *args, **kwargs):

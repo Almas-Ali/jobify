@@ -1,0 +1,160 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}Profile{% endblock title %}
+{% block content %}
+
+<div class="container">
+    <!-- profile card -->
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-5">
+                    {% if request.user.image %}
+                    <img src="{{ request.user.image.url }}" alt="profile image" class="rounded-circle" width="200px"
+                      height="200px">
+                    {% else %}
+                    <img
+                      src="https://ui-avatars.com/api/?name={{ request.user.get_full_name }}&amp;size=200&amp;rounded=true&amp;color=fff&amp;background=fc6369"
+                      alt="profile image" class="rounded-circle" width="200px" height="200px">
+                    {% endif %}
+                </div>
+                <div class="col-md-7">
+                    <div class="profile-head">
+                        <h5>{{ request.user.username }}</h5>
+                        <h6>{{ request.user.email }}</h6>
+                        <p class="proile-rating">RANKINGS : <span>8/10</span></p>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            {% if request.user.is_employer %}
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                                  aria-controls="home" aria-selected="true">About</a>
+                            </li>
+                            {% endif %}
+                            {% if request.user.is_applicant %}
+                            <li class="nav-item">
+                                <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                                  aria-controls="profile" aria-selected="false">About</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <a href="#" class="btn btn-primary">Edit Profile</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-work">
+
+                        {% if request.user.is_employer %}
+                        <h3>COMPANY</h3>
+                        <ul class="list-unstyled">
+                            {% for company in request.user.user_companies.all %}
+                            <li><a href="#">{{ company.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+
+                        {% if request.user.is_applicant %}
+                        <p>SKILLS</p>
+                        <a href="">{{ request.user.skills }}</a>
+                        {% endif %}
+
+                        <p>INTERESTED IN</p>
+                        {% for job in request.user.interested_in.all %}
+                        <a href="#" class="text-muted">{{ job.title }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="tab-content profile-tab" id="myTabContent">
+
+                        {% if request.user.is_employer %}
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Company Name</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>
+                                        {% for company in request.user.employer.user_companies %}
+                                        {{ company }}
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Company Address</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ request.user.employer.address }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Company Phone</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ request.user.employer.phone }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Company Website</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ request.user.employer.website }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if request.user.is_applicant %}
+                        <div class="tab-pane fade show active" id="profile" role="tabpanel"
+                          aria-labelledby="profile-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Skills</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ request.user.skills }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Education</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ request.user.education }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Experience</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ request.user.experience }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end profile card -->
+</div>
+{% if request.user.is_employer %}
+
+{% endif %}
+
+{% if request.user.is_applicant %}
+
+{% endif %}
+
+
+
+{% endblock content %}

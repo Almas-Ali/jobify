@@ -1,11 +1,27 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% block title %}Post A Job{% endblock title %}
+{% block styles %}
+<style>
+  .errorlist {
+    color: red;
+  }
+</style>
+{% endblock styles %}
+
 {% block content %}
 
   {% if request.user.is_employer %}
   <h2 class="m-3 text-center">Post A Job</h2>
     <div class="m-3">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
         <form action="{% url 'employeer:add_job' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}

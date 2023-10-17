@@ -31,12 +31,6 @@ class CompanyForm(forms.ModelForm):
             }),
         }
 
-    def save(self, *args, **kwargs):
-        instance = super().save(commit=False)
-        instance.user = self.request.user
-        instance.save()
-        return instance
-
 
 class JobForm(forms.ModelForm):
     class Meta:

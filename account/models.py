@@ -18,6 +18,25 @@ class User(AbstractUser):
     phone = models.CharField(max_length=20)
     bio = models.TextField()
 
+    gender = models.CharField(
+        max_length=10,
+        choices=[
+            ('Male', 'Male'),
+            ('Female', 'Female'),
+            ('Other', 'Other'),
+        ],
+        default=''
+    )
+    interested_in = models.CharField(
+        max_length=10,
+        choices=[
+            ('Full Time', 'Full Time'),
+            ('Part Time', 'Part Time'),
+            ('Freelance', 'Freelance'),
+            ('Internship', 'Internship'),
+        ],
+        default='Full Time'
+    )
     user_type = models.CharField(
         max_length=10,
         choices=[
@@ -26,13 +45,13 @@ class User(AbstractUser):
         ],
         default='Employeer'
     )
-    
+
     is_employer = models.BooleanField(default=False)
     is_applicant = models.BooleanField(default=False)
     is_suspend = models.BooleanField(default=False)
 
     objects = UserManager()
-    
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
 
@@ -42,7 +61,7 @@ class User(AbstractUser):
             self.is_applicant = True
         elif self.user_type == 'Employeer':
             self.is_employer = True
-            
+
         return super().save(*args, **kwargs)
 
     def __str__(self):
@@ -63,4 +82,3 @@ class User(AbstractUser):
 
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
-
