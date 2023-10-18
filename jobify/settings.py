@@ -50,8 +50,8 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'account.User'
-# login url 
 LOGIN_URL = 'account:signin'
+APPEND_SLASH = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -51,11 +51,15 @@
                     <div class="d-flex">
                         <form action="{% url 'employeer:locations' %}" method="post" class="ms-2">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-primary">Edit</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-edit"></i>
+                            </button>
                         </form>
                         <form action="{% url 'employeer:locations' %}" method="post" class="ms-2">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </form>
                     </div>
                 </td>

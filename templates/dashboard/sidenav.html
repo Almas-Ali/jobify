@@ -8,8 +8,11 @@
     </a>
     <div class="d-flex align-items-center ms-4 mb-4">
       <div class="position-relative">
-        <img class="rounded-circle" src="{% static 'dashboard/img/user.jpg' %}" alt=""
-          style="width: 40px; height: 40px;">
+        {% if request.user.image %}
+          <img class="rounded-circle" src="{{ request.user.image.url }}" alt="{{ request.user.username }}" style="width: 40px; height: 40px;">
+        {% else %}
+          <img class="rounded-circle" src="https://ui-avatars.com/api/?name={{ request.user.get_full_name }}&amp;size=200&amp;rounded=true&amp;color=fff&amp;background=fc6369" alt="{{ request.user.username }}" style="width: 40px; height: 40px;">
+        {% endif %}
         <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
         </div>
       </div>
@@ -66,16 +69,28 @@
         </div>
       </div>
       <div class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+        <a href="#" class="nav-link dropdown-toggle
+        {% if request.resolver_match.url_name == 'applications' or request.resolver_match.url_name == 'rejected_applications' %}
+        active
+        {% endif %}
+        " data-bs-toggle="dropdown">
           <i class="fa fa-briefcase me-2"></i>
           Applications
         </a>
         <div class="dropdown-menu bg-transparent border-0">
-          <a href="#" class="dropdown-item">
+          <a href="{% url 'employeer:applications' %}" class="dropdown-item
+          {% if request.resolver_match.url_name == 'applications' %}
+          active
+          {% endif %}
+          ">
             <i class="fa fa-plus me-2"></i>
             All Applications
           </a>
-          <a href="#" class="dropdown-item">
+          <a href="{% url 'employeer:rejected_applications' %}" class="dropdown-item
+          {% if request.resolver_match.url_name == 'rejected_applications' %}
+          active
+          {% endif %}
+          ">
             <i class="fa fa-times me-2"></i>
             Rejected Applications
           </a>

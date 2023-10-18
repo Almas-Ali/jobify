@@ -80,12 +80,15 @@
     </div>
     <div class="nav-item dropdown">
       <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-        <img class="rounded-circle me-lg-2" src="{% static 'dashboard/img/user.jpg' %}" alt=""
-          style="width: 40px; height: 40px;">
-        <span class="d-none d-lg-inline-flex">{{ request.user.get_full_name }}</span>
+        {% if request.user.image %}
+          <img class="rounded-circle me-lg-2" src="{{ request.user.image.url }}" alt="{{ request.user.username }}" style="width: 40px; height: 40px;">
+        {% else %}
+          <img class="rounded-circle me-lg-2" src="https://ui-avatars.com/api/?name={{ request.user.get_full_name }}&amp;size=200&amp;rounded=true&amp;color=fff&amp;background=fc6369" alt="{{ request.user.username }}" style="width: 40px; height: 40px;">
+        {% endif %}
+          <span class="d-none d-lg-inline-flex">{{ request.user.get_full_name }}</span>
       </a>
       <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-        <a href="#" class="dropdown-item">My Profile</a>
+        <a href="{% url 'core:profile' %}" class="dropdown-item">My Profile</a>
         <a href="#" class="dropdown-item">Settings</a>
         <form action="{% url 'account:signout' %}" method="post">
           {% csrf_token %}

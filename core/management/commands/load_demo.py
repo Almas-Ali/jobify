@@ -78,18 +78,19 @@ class Command(BaseCommand):
             locations = Location.objects.all()
             categories = Category.objects.all()
             applications = Application.objects.all()
+            applicants = Application.objects.all()
             job = Job(
                 employer=users[random.randint(0, len(users) - 1)],
                 company=companies[random.randint(0, len(companies) - 1)],
-                applicants=users[random.randint(0, len(users) - 1)],
-                tags=tags[random.randint(0, len(tags) - 1)],
+                # applicants=applicants.set(users[random.randint(0, len(users) - 1)]),
+                # tags=tags[random.randint(0, len(tags) - 1)],
 
                 title=fake.job(),
                 description=fake.text(),
                 location=locations[random.randint(0, len(locations) - 1)],
                 # User .add() to add multiple in many to many fields
                 # applications = applications[random.randint(0, len(applications) - 1)],
-                applications=self.job.add(applications[random.randint(0, len(applications) - 1)]),
+                # applications=self.job.add(applications[random.randint(0, len(applications) - 1)]),
                 views=random.randint(0, 100),
                 job_type=fake.random_element(elements=['Full Time', 'Part Time', 'Remote', 'Internship', 'Contract', 'Temporary']),
                 category=categories[random.randint(0, len(categories) - 1)],
@@ -101,16 +102,11 @@ class Command(BaseCommand):
                 is_published=True,
                 is_approved=True,
             )
-
-            # Add applicants (many-to-many relationship)
-            applicants = users[:random.randint(1, len(users))]  # Randomly select applicants
-            job.applicants.add(*applicants)  # Use the add method to associate multiple applicants
-
-            # Add applications (many-to-many relationship)
-            selected_applications = random.sample(list(applications), random.randint(1, len(applications)))
-            job.applications.add(*selected_applications)  # Use the add method to associate multiple applications
-
             job.save()
+            # Set the many-to-many fields using .set()
+            job.tags.set(tags[random.randint(0, len(tags) - 1)])
+            job.applicants.set(applicants[random.randint(0, len(applicants) - 1)])
+            # job.save()
 
         self.stdout.write(self.style.SUCCESS('[+] Jobs created successfully'))
 

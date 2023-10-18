@@ -6,9 +6,9 @@
 
 {% if request.user.is_employer %}
 <h2 class="m-3 text-center">All Companies</h2>
-<div class="m-3 col-md-4">
+<div class="d-flex flex-wrap justify-content-around">
     {% for company in companies %}
-    <div class="card" style="width: 18rem;">
+    <div class="card m-2" style="width: 18rem;">
         <img src="{{ company.logo.url }}" class="card-img-top" alt="{{ company.name }}">
         <div class="card-body">
             <h5 class="card-title">{{ company.name }}</h5>

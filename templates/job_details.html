@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Job Details{% endblock title %}
+
+
+{% block content %}
+
+<!-- start banner Area -->
+<section class="banner-area relative" id="home">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12">
+                <h1 class="text-white">
+                    Job Details
+                </h1>
+                <p class="text-white link-nav"><a href="index.html">Home </a> <span class="lnr lnr-arrow-right"></span>
+                    <a href="single.html"> Job Details</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End banner Area -->
+
+<!-- Start post Area -->
+<section class="post-area section-gap">
+    <div class="container">
+        <div class="row justify-content-center d-flex">
+            <div class="col-lg-8 post-list">
+                <div class="single-post d-flex flex-row">
+                    <div class="thumb">
+                        <img src="{{ job.image.url }}" alt="{{ job.title }}" width="100px" height="100px" class="m-2">
+                    </div>
+                    <div class="details">
+                        <div class="title d-flex flex-row justify-content-between">
+                            <div class="titles">
+                                <a href="#">
+                                    <h4>{{ job.title }}</h4>
+                                </a>
+                                <h6>{{ job.company.name }}</h6>
+                            </div>
+                            <ul class="btns">
+                                <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
+                                <li><a href="#">Apply</a></li>
+                            </ul>
+                        </div>
+                        <p>
+                            {{ job.short_description }}
+                        </p>
+                        <h5>Job Nature: {{ job.type }}</h5>
+                        <p class="address">
+                            <span class="lnr lnr-map"></span>
+                            {{ job.location }}
+                        </p>
+                        <p class="address">
+                            <span class="lnr lnr-database"></span>
+                            {{ job.salary }}
+                        </p>
+                        <ul class="tags">
+                            {% for tag in job.tags.all %}
+                            <li>
+                                <span class="lnr lnr-tag"></span>
+                                <a href="#">{{ tag.name }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="single-post job-details">
+                    <h4 class="single-title">Whom we are looking for</h4>
+                    <p>
+                        {{ job.description |safe }}
+                    </p>
+                </div>
+            </div>
+
+            {% include 'sidebar.html' with jobs=jobs categories=categories locations=locations tags=tags %}
+
+        </div>
+    </div>
+</section>
+<!-- End post Area -->
+
+
+<!-- Start callto-action Area -->
+<section class="callto-action-area section-gap">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="menu-content col-lg-9">
+                <div class="title text-center">
+                    <h1 class="mb-10 text-white">Join us today without any hesitation</h1>
+                    <p class="text-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation.</p>
+                    <a class="primary-btn" href="#">I am a Candidate</a>
+                    <a class="primary-btn" href="#">We are an Employer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End calto-action Area -->
+
+
+
+
+{% endblock content %}

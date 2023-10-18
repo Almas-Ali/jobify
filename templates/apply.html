@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Apply{% endblock title %}
+{% block content %}
+
+<!-- start banner Area -->
+<section class="banner-area relative" id="home">
+  <div class="overlay overlay-bg"></div>
+  <div class="container">
+    <div class="row d-flex align-items-center justify-content-center">
+      <div class="about-content col-lg-12">
+        <h1 class="text-white">
+          Apply Now
+        </h1>
+        <p class="text-white"><a href="{% url 'core:home' %}">Home </a> <span class="lnr lnr-arrow-right"></span> <a
+            href="#"> Apply</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End banner Area -->
+
+<section class="contact-page-area section-gap">
+  <div class="container">
+    <h3 class="p-4">
+      Apply for: {{ job.title }}
+    </h3>
+    <div class="row">
+      <div class="col-lg-12">
+        {% if is_applied %}
+        <div class="alert alert-success">
+          You have already applied for this job.
+        </div>
+        {% else %}
+        
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <form class="form-area" action="{% url 'core:apply' job.slug %}" method="post" class="contact-form text-center"
+          enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="primary-btn mt-20 text-white" style="float: right;" type="submit">Apply</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
