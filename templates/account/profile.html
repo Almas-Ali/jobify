@@ -8,7 +8,7 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-3 text-center">
                     {% if request.user.image %}
                     <img src="{{ request.user.image.url }}" alt="profile image" class="rounded-circle" width="200px"
                       height="200px">
@@ -17,8 +17,14 @@
                       src="https://ui-avatars.com/api/?name={{ request.user.get_full_name }}&amp;size=200&amp;rounded=true&amp;color=fff&amp;background=fc6369"
                       alt="profile image" class="rounded-circle" width="200px" height="200px">
                     {% endif %}
+                    <div class="row text-center my-2">
+                        <div class="col-md-12">
+                            <a href="#" class="btn btn-primary btn-block">Edit
+                                Profile</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-9">
                     <div class="profile-head">
                         <h5>{{ request.user.username }}</h5>
                         <h6>{{ request.user.email }}</h6>
@@ -38,9 +44,6 @@
                             {% endif %}
                         </ul>
                     </div>
-                </div>
-                <div class="col-md-2">
-                    <a href="#" class="btn btn-primary">Edit Profile</a>
                 </div>
             </div>
             <div class="row">

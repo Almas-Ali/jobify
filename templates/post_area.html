@@ -1,0 +1,76 @@
+<!-- Start post Area -->
+<section class="post-area section-gap">
+  <div class="container">
+    <div class="row justify-content-center d-flex">
+      <div class="col-lg-8 post-list">
+        <ul class="cat-list">
+          <li><a href="#">Recent</a></li>
+          <li><a href="#">Full Time</a></li>
+          <li><a href="#">Intern</a></li>
+          <li><a href="#">part Time</a></li>
+        </ul>
+
+        {% for job in jobs %}
+        <div class="single-post d-flex flex-row">
+          <div class="thumb mr-2">
+            <img src="{{ job.image.url }}" alt="{{ job.title }}" width="100" height="100">
+          </div>
+          <div class="details">
+            <div class="title d-flex flex-row justify-content-between">
+              <div class="titles">
+                <a href="{{ job.get_absolute_url }}">
+                  <h4 class="text-wrap">{{ job.title }}</h4>
+                </a>
+                <h6>{{ job.company.name }}</h6>
+              </div>
+              <ul class="btns">
+                <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
+                {% if job.is_closed %}
+                <li><a href="#" class="genric-btn danger circle arrow">Closed</a></li>
+                {% else %}
+                <li><a href="{% url 'core:apply' job.slug %}" class="genric-btn success circle arrow">Apply</a></li>
+                {% endif %}
+              </ul>
+            </div>
+            <p>
+              {{ job.short_description }}
+            </p>
+            <h5>Job Nature: {{ job.job_type }}</h5>
+            <p class="address"><span class="lnr lnr-map"></span>
+              {{ job.location }}
+            </p>
+            <p class="address"><span class="lnr lnr-calendar-full"></span>
+
+              {% if job.experience == 0 %}
+              No Experience
+              {% else %}
+              {{ job.experience }} Years Experience
+              {% endif %}
+            </p>
+            <p class="address"><i class="fa fa-money"></i>
+              {% if job.salary == 0 %}
+              Negotiable
+              {% else %}
+              {{ job.salary }}
+              {% endif %}
+            </p>
+            <ul class="tags">
+              {% for tag in job.tags.all %}
+              <li>
+                <span class="lnr lnr-tag"></span>
+                {{ tag.name }}
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        {% endfor %}
+
+        <a class="text-uppercase loadmore-btn mx-auto d-block" href="category.html">Load More job Posts</a>
+
+      </div>
+      {% include 'sidebar.html' with jobs=jobs categories=categories locations=locations tags=tags %}
+    </div>
+  </div>
+</section>
+<!-- End post Area -->

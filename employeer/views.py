@@ -1,10 +1,11 @@
 from django.views.generic import CreateView, ListView
 from django.views.generic.base import TemplateView
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 
-from job.models import Company, Job, Location, Tag
+from job.models import Company, Job, Location, Tag, Application
 from employeer.forms import CompanyForm, JobForm, LocationForm, TagForm
 
 
@@ -109,3 +110,35 @@ class TagsView(LoginRequiredMixin, TemplateView):
             'form': TagForm(),
             'tags': Tag.objects.all()
         })
+
+
+class ApplicationsView(LoginRequiredMixin, ListView):
+    template_name = 'employeer/applications.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, 'employeer/applications.html', {
+            'applications': Application.objects.filter(job__employer=request.user).exclude(status='rejected')
+        })
+
+
+class RejectedApplicationsView(LoginRequiredMixin, TemplateView):
+    template_name = 'employeer/rejected_applications.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, 'employeer/rejected_applications.html', {
+            'applications': Application.objects.filter(job__employer=request.user, status='rejected')
+        })
+
+
+class ApplicationStatusView(LoginRequiredMixin, TemplateView):
+    template_name = 'employeer/application_status.html'
+
+    def get(self, request, *args, **kwargs):
+        return reverse_lazy('employeer:applications')
+
+    def post(self, request, *args, **kwargs):
+        application = Application.objects.get(pk=kwargs['pk'])
+        application.status = request.POST.get('status')
+        application.save()
+        messages.success(request, 'Application status updated successfully')
+        return redirect('employeer:application_status', pk=kwargs['pk'])

@@ -69,16 +69,28 @@
         </div>
       </div>
       <div class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+        <a href="#" class="nav-link dropdown-toggle
+        {% if request.resolver_match.url_name == 'applications' or request.resolver_match.url_name == 'rejected_applications' %}
+        active
+        {% endif %}
+        " data-bs-toggle="dropdown">
           <i class="fa fa-briefcase me-2"></i>
           Applications
         </a>
         <div class="dropdown-menu bg-transparent border-0">
-          <a href="#" class="dropdown-item">
+          <a href="{% url 'employeer:applications' %}" class="dropdown-item
+          {% if request.resolver_match.url_name == 'applications' %}
+          active
+          {% endif %}
+          ">
             <i class="fa fa-plus me-2"></i>
             All Applications
           </a>
-          <a href="#" class="dropdown-item">
+          <a href="{% url 'employeer:rejected_applications' %}" class="dropdown-item
+          {% if request.resolver_match.url_name == 'rejected_applications' %}
+          active
+          {% endif %}
+          ">
             <i class="fa fa-times me-2"></i>
             Rejected Applications
           </a>

@@ -1,6 +1,6 @@
 from django import forms
 
-from job.models import Company, Job, Location, Tag
+from job.models import Company, Job, Location, Tag, Application
 
 
 class CompanyForm(forms.ModelForm):
@@ -159,5 +159,32 @@ class TagForm(forms.ModelForm):
             'slug': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'tag-name'
+            }),
+        }
+
+
+class ApplicationForm(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = ['resume', 'cover_letter', 'message']
+        labels = {
+            'resume': 'Resume',
+            'cover_letter': 'Cover Letter',
+            'message': 'Message',
+        }
+        widgets = {
+            'resume': forms.FileInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Resume',
+                'accept': 'application/pdf'
+            }),
+            'cover_letter': forms.FileInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Cover Letter',
+                'accept': 'application/pdf'
+            }),
+            'message': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Message to Employer'
             }),
         }

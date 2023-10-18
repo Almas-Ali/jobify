@@ -25,7 +25,7 @@ class Category(BaseModel):
 class Company(BaseModel):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='user_companies') # One user can have multiple companies and one company can have only one user
     name = models.CharField(max_length=100, default='')
-    description = models.TextField(max_length=1000, default='')
+    description = models.TextField(max_length=5000, default='')
     website = models.URLField(max_length=100, default='')
     logo = models.ImageField(upload_to='companies')
     slug = models.SlugField(blank=True, null=True, unique=True)
@@ -80,7 +80,8 @@ class Job(BaseModel):
     tags = models.ManyToManyField(Tag, related_name='job_tags') # One tag can have multiple jobs and one job can have multiple tags
 
     title = models.CharField(max_length=100, default='') # Job Title
-    description = models.TextField(max_length=1000, default='') # Job Description
+    short_description = models.TextField(max_length=500, default='') # Short Description
+    description = models.TextField(max_length=5000, default='') # Job Description
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='location_jobs') # One location can have multiple jobs and one job can have only one location
     applications = models.ManyToManyField(
         'job.Application', related_name='job_applications', 
@@ -127,6 +128,8 @@ class Job(BaseModel):
 class Application(BaseModel):
     job = models.ForeignKey('job.Job', on_delete=models.CASCADE, related_name='job_applications', default=None) # One job can have multiple applications and one application can have only one job
     applicant = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    resume = models.FileField(upload_to='resumes', blank=True, null=True)
+    cover_letter = models.FileField(upload_to='cover_letters', blank=True, null=True)
     status = models.CharField(
         max_length=20,
         choices=[
