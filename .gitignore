@@ -4,6 +4,8 @@ __pycache__/
 *.pyc
 media/companies/*
 media/jobs/*
+media/cover_letters/*
+media/resumes/*
 
 templates/bootstrap-admin-template-free/
 templates/job-listing-master/
