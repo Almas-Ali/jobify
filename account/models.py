@@ -18,6 +18,8 @@ class User(AbstractUser):
     phone = models.CharField(max_length=20)
     bio = models.TextField()
 
+    skills = models.ManyToManyField('job.Skill', blank=True)
+
     gender = models.CharField(
         max_length=10,
         choices=[
@@ -67,6 +69,7 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
+    @property
     def is_admin(self):
         return self.is_superuser
 

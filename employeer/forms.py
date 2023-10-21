@@ -35,11 +35,12 @@ class CompanyForm(forms.ModelForm):
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ['title', 'description', 'job_type', 'vacancy', 'category', 'location',
-                  'company', 'salary', 'experience', 'image', 'slug', 'tags', 'is_published', 'is_closed']
+        fields = ['title', 'short_description', 'description', 'job_type', 'vacancy', 'category', 'location',
+                  'company', 'salary', 'experience', 'skills', 'image', 'slug', 'tags', 'is_published', 'is_closed']
 
         labels = {
             'title': 'Job Title',
+            'short_description': 'Short Description',
             'description': 'Job Description',
             'job_type': 'Job Type',
             'vacancy': 'Number of Vacancy',
@@ -48,6 +49,7 @@ class JobForm(forms.ModelForm):
             'company': 'Company',
             'salary': 'Salary',
             'experience': 'Experience in years',
+            'skills': 'Job Skills',
             'image': 'Job Image',
             'slug': 'Slug',
             'tags': 'Job Tags',
@@ -59,6 +61,10 @@ class JobForm(forms.ModelForm):
             'title': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Job Title'
+            }),
+            'short_description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Short Description'
             }),
             'description': forms.Textarea(attrs={
                 'class': 'form-control',
@@ -99,6 +105,10 @@ class JobForm(forms.ModelForm):
             'experience': forms.NumberInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Experience in years'
+            }),
+            'skills': forms.SelectMultiple(attrs={
+                'class': 'form-control',
+                'placeholder': 'Job Skills'
             }),
             'image': forms.FileInput(attrs={
                 'class': 'form-control',

@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 from django.views.generic.base import TemplateView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -42,7 +42,14 @@ class JobsView(LoginRequiredMixin, ListView):
     context_object_name = 'jobs'
 
     def get_queryset(self, *args, **kwargs):
-        return Job.objects.filter(employer=self.request.user)
+        # return Job.objects.filter(employer=self.request.user)
+        if self.request.user.is_superuser:
+            return Job.objects.all()
+
+        elif self.request.user.is_employer:
+            return Job.objects.filter(
+                employer=self.request.user
+            )
 
 
 class AddJobView(LoginRequiredMixin, CreateView):
@@ -63,6 +70,28 @@ class AddJobView(LoginRequiredMixin, CreateView):
             messages.error(request, 'Job creation failed')
             return render(request, 'employeer/add_job.html', {'form': form})
 
+
+class EditJobView(LoginRequiredMixin, UpdateView):
+    model = Job
+    form_class = JobForm
+    template_name = 'employeer/edit_job.html'
+    
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, {
+            'form': JobForm(instance=self.get_object()),
+            'job': self.get_object()
+        })
+
+    def post(self, request, *args, **kwargs):
+        form = JobForm(request.POST, request.FILES, instance=self.get_object())
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Job updated successfully')
+            return redirect('employeer:jobs')
+        else:
+            messages.error(request, 'Job update failed')
+            return render(request, self.template_name, {'form': form})
+ 
 
 class LocationsView(LoginRequiredMixin, TemplateView):
     model = Location
@@ -141,4 +170,28 @@ class ApplicationStatusView(LoginRequiredMixin, TemplateView):
         application.status = request.POST.get('status')
         application.save()
         messages.success(request, 'Application status updated successfully')
-        return redirect('employeer:application_status', pk=kwargs['pk'])
+        return redirect('employeer:applications')
+
+
+class ApproveJobsView(LoginRequiredMixin, TemplateView):
+    template_name = 'employeer/approve_jobs.html'
+    # permission_required = 'is_admin'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, 'employeer/approve_jobs.html', {
+            'jobs': Job.objects.all().order_by('-created_at')
+        })
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_admin:
+            job = Job.objects.get(pk=request.POST.get('job_id'))
+            if job.is_approved:
+                job.is_approved = False
+            else:
+                job.is_approved = True
+            job.save()
+            messages.success(request, 'Job approved successfully')
+            return redirect('employeer:approve_jobs')
+        else:
+            messages.error(request, 'You are not authorized for this action')
+            return redirect('core:dashboard')

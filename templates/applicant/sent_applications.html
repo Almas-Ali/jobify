@@ -1,0 +1,83 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}Applicants List{% endblock title %}
+
+{% block styles %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
+{% endblock styles %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"
+  integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  $(document).ready(function () {
+    $('#applicants_table').DataTable();
+  });
+</script>
+{% endblock scripts %}
+
+{% block content %}
+
+
+{% if request.user.is_employer %}
+{% endif %}
+
+{% if request.user.is_applicant %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} m-2">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
+<h2 class="text-center my-4">
+  Sent Applications
+</h2>
+<div class="mx-2 my-2">
+  <table id="applicants_table" class="table">
+    <thead>
+      <tr>
+        <th>Sno</th>
+        <th>Job Title</th>
+        <th>Company</th>
+        <th>Applied On</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for application in applications %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ application.job.title }}</td>
+        <td>{{ application.job.company }}</td>
+        <td>{{ application.created_at }}</td>
+        <td>{{ application.status }}</td>
+        <td>
+          <form action="{% url 'applicant:sent_applications' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ application.id }}" hidden>
+            <button type="submit" class="btn btn-sm btn-danger">
+              <i class="fas fa-trash-alt"></i>
+              Cancel Application
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+{% endif %}
+
+
+{% endblock content %}

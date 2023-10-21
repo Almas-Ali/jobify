@@ -1,0 +1,48 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}Edit Job{% endblock title %}
+{% block styles %}
+<style>
+  .errorlist {
+    color: red;
+  }
+</style>
+{% endblock styles %}
+{% block scripts %}
+<!-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+  tinymce.init({
+    selector: 'textarea',
+    plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+    toolbar_mode: 'floating',
+  }); -->
+</script>
+{% endblock scripts %}
+
+{% block content %}
+
+  {% if request.user.is_employer %}
+  <h2 class="m-3 text-center">Edit Job</h2>
+    <div class="m-3">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+        <form action="{% url 'employeer:edit_job' job.pk %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+  {% endif %}
+
+  {% if request.user.is_applicant %}
+
+  {% endif %}
+
+
+{% endblock content %}

@@ -73,6 +73,22 @@ class Location(BaseModel):
     #     return reverse('core:location_detail', kwargs={'slug': self.slug})
 
 
+class Skill(BaseModel):
+    name = models.CharField(max_length=50, default='')
+    slug = models.SlugField(blank=True, null=True, unique=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Skill'
+        verbose_name_plural = 'Skills'
+
+    def __str__(self):
+        return self.name
+
+    # def get_absolute_url(self):
+    #     return reverse('core:skill_detail', kwargs={'slug': self.slug})
+
+
 class Job(BaseModel):
     employer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='employer_jobs') # One employer can have multiple jobs and one job can have only one employer
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='company_jobs') # One company can have multiple jobs and one job can have only one company
@@ -107,6 +123,7 @@ class Job(BaseModel):
     experience = models.IntegerField(default=1) # Experience in years
     image = models.ImageField(upload_to='jobs') # Job Image
     slug = models.SlugField(blank=True, null=True, unique=True)
+    skills = models.ManyToManyField(Skill, related_name='job_skills', blank=True) # One skill can have multiple jobs and one job can have multiple skills
     
     is_published = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
@@ -127,7 +144,7 @@ class Job(BaseModel):
 
 class Application(BaseModel):
     job = models.ForeignKey('job.Job', on_delete=models.CASCADE, related_name='job_applications', default=None) # One job can have multiple applications and one application can have only one job
-    applicant = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    applicant = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='applicant_applications', default=None) # One applicant can have multiple applications and one application can have only one applicant
     resume = models.FileField(upload_to='resumes', blank=True, null=True)
     cover_letter = models.FileField(upload_to='cover_letters', blank=True, null=True)
     status = models.CharField(
