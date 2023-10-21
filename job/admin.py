@@ -1,11 +1,12 @@
 from django.contrib import admin
 
-from job.models import Job, Category, Application, Tag, Location, Company
+from job.models import Job, Category, Application, Tag, Location, Company, Skill
 
 
 @admin.register(Job)
 class JobAdmin(admin.ModelAdmin):
-    list_display = ['title', 'location', 'job_type', 'category', 'vacancy', 'salary', 'experience', 'image', 'slug']
+    list_display = ['title', 'location', 'job_type', 'category',
+                    'vacancy', 'salary', 'experience', 'image', 'slug']
     prepopulated_fields = {'slug': ('title',)}
 
 
@@ -39,3 +40,8 @@ class CompanyAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug', 'description', 'website', 'logo']
     prepopulated_fields = {'slug': ('name',)}
 
+
+@admin.register(Skill)
+class SkillAdmin(admin.ModelAdmin):
+    list_display = ['name', 'slug']
+    prepopulated_fields = {'slug': ('name',)}

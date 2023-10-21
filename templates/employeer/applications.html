@@ -23,6 +23,14 @@
 
 {% block content %}
 
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} m-2">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
 
 {% if request.user.is_employer %}
 <h2 class="text-center my-4">
@@ -36,7 +44,7 @@
         <th>User</th>
         <th>Message</th>
         <th>Status</th>
-        <th>Details</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -45,29 +53,106 @@
         <td>{{ forloop.counter }}</td>
         <td>{{ application.applicant.get_full_name }}</td>
         <td>{{ application.message }}</td>
+        <td>{{ application.status }}</td>
         <td>
-          <form action="{% url 'employeer:application_status' application.id %}" method="post">
-            {% csrf_token %}
-            <select name="status" id="status" class="form-control">
-              <option value="Pending" {% if application.status == 'Pending' %} selected {% endif %}>
-                Pending
-              </option>
-              <option value="Shortlisted" {% if application.status == 'Shortlisted' %} selected {% endif %}>Shortlisted
-              </option>
-              <option value="Accepted" {% if application.status == 'Accepted' %} selected {% endif %}>
-                Accepted
-              </option>
-              <option value="Rejected" {% if application.status == 'Rejected' %} selected {% endif %}>
-                Rejected
-              </option>
-            </select>
-            <button type="submit" class="btn btn-primary">Save</button>
-          </form>
-        </td>
-        <td>
-          <a href="#" class="btn btn-primary">
-            <i class="fas fa-eye"></i>
-          </a>
+          <div class="d-flex justify-content-center">
+            <div class="m-1">
+              <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                data-bs-target="#details-{{ application.id }}">
+                <i class="fas fa-eye"></i>
+              </button>
+              <div class="modal fade" id="details-{{ application.id }}" tabindex="-1" data-bs-backdrop="static"
+                data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalTitleId">
+                        Application Details
+                      </h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>
+                        <strong>Job: </strong>{{ application.job.title }}
+                      </p>
+                      <p>
+                        {% if application.applicant.image %}
+                        <strong>Applicant Photo: </strong><img src="{{ application.applicant.image.url }}"
+                          alt="{{ application.applicant.get_full_name }}" width="50px">
+                        {% else %}
+                        <strong>Applicant Photo: </strong><img
+                          src="https://ui-avatars.com/api/?name={{ request.user.get_full_name }}&amp;size=200&amp;rounded=true&amp;color=fff&amp;background=fc6369"
+                          alt="profile image" class="rounded-circle" width="50px" height="50px">
+                        {% endif %}
+                      </p>
+                      <p>
+                        <strong>Applicant: </strong>{{ application.applicant.get_full_name }}
+                      </p>
+                      <p>
+                        <strong>Message: </strong>{{ application.message }}
+                      </p>
+                      <p>
+                        <strong>Status: </strong>{{ application.status }}
+                      </p>
+                      <p>
+                        <strong>Job posted on: </strong>{{ application.job.created_at }}
+                      </p>
+                      <p>
+                        <strong>Applied On: </strong>{{ application.created_at }}
+                      </p>
+                      <p>
+                        <strong>Resume: </strong><a href="{{ application.resume.url }}" target="_blank">View</a>
+                      </p>
+                      <p>
+                        <strong>Cover Letter: </strong><a href="{{ application.cover_letter.url }}"
+                          target="_blank">View</a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="m-1">
+              <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                data-bs-target="#application-{{ application.id }}">
+                <i class="fas fa-edit"></i>
+              </button>
+              <div class="modal fade" id="application-{{ application.id }}" tabindex="-1" data-bs-backdrop="static"
+                data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalTitleId">
+                        Update Application
+                      </h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="{% url 'employeer:application_status' application.id %}" method="post">
+                        {% csrf_token %}
+                        <select name="status" id="status" class="form-control">
+                          <option value="Pending" {% if application.status == 'Pending' %} selected {% endif %}>
+                            Pending
+                          </option>
+                          <option value="Shortlisted" {% if application.status == 'Shortlisted' %} selected {% endif %}>
+                            Shortlisted
+                          </option>
+                          <option value="Accepted" {% if application.status == 'Accepted' %} selected {% endif %}>
+                            Accepted
+                          </option>
+                          <option value="Rejected" {% if application.status == 'Rejected' %} selected {% endif %}>
+                            Rejected
+                          </option>
+                        </select>
+                        <button type="submit" class="btn btn-primary my-3">Save</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </td>
       </tr>
       {% endfor %}
@@ -75,25 +160,6 @@
   </table>
 </div>
 
-
-<div class="modal fade" id="addLocation" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
-  aria-labelledby="modalTitleId" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalTitleId">Add Location</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form action="#" method="post">
-          {% csrf_token %}
-          {{ form.as_p }}
-          <button type="submit" class="btn btn-primary w-100">Save</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
 
 {% endif %}
 

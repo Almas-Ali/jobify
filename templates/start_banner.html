@@ -26,16 +26,11 @@
             </div>
           </div>
         </form>
-        <!-- <p class="text-white"> <span>Search by tags:</span>
-          {% for tag in tags %}
-          <a href="#" class="text-light">
-            <p class="genric-btn primary rounded">
-              <span class="lnr lnr-tag"></span>
-              {{ tag.name }}
-            </p>
-          </a>
-          {% endfor %}
-        </p> -->
+        {% if search %}
+        <p class="text-white h4">
+          <span>{{ search.count }}</span> results found for <span>"{{ search.query }}"</span>
+        </p>
+        {% endif %}
       </div>
     </div>
   </div>

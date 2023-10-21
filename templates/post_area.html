@@ -1,3 +1,5 @@
+{% load employeer_tags %}
+
 <!-- Start post Area -->
 <section class="post-area section-gap">
   <div class="container">
@@ -26,10 +28,21 @@
               <ul class="btns">
                 <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
                 {% if job.is_closed %}
-                <li><a href="#" class="genric-btn danger circle arrow">Closed</a></li>
+                  <li><a href="#" class="genric-btn danger circle arrow">Closed</a></li>
                 {% else %}
-                <li><a href="{% url 'core:apply' job.slug %}" class="genric-btn success circle arrow">Apply</a></li>
+                  
+                  {% if request.user.is_applicant %}
+                  
+                    {% if request.user|is_applied:job %}
+                      <li><a href="javascript:void(0);" class="genric-btn success circle arrow">Applied</a></li>
+                      
+                      {% else %}
+                      <li><a href="{% url 'core:apply' job.slug %}" class="genric-btn info circle arrow">Apply</a></li>
+                      {% endif %}
+                  {% endif %}
+
                 {% endif %}
+              
               </ul>
             </div>
             <p>
@@ -54,6 +67,36 @@
               {{ job.salary }}
               {% endif %}
             </p>
+            <p class="address"><i class="fa fa-clock-o"></i>
+              {{ job.created_at|timesince }} ago
+            </p>
+            <p class="address"><i class="fa fa-eye"></i>
+              {{ job.views }}
+            </p>
+            <ul class="skills">
+              Skills:
+              {% for skill in job.skills.all %}
+              <li>
+                <span class="lnr lnr-tag"></span>
+                <a href="#">{{ skill.name }}</a>
+              </li>
+              {% endfor %}
+            </ul>
+            
+            {% if request.user.is_authenticated %}
+
+            {% if request.user.is_applicant %}
+            Matches {{ job.matches }}% 
+            {% if job.matches >= 90 %}<strong class="text-uppercase">(Recommended)</strong>{% endif %}
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" style="width: {{ job.matches }}%;" aria-valuenow="{{ job.matches }}" aria-valuemin="0" aria-valuemax="100">{{ job.matches }}%</div>
+            </div>
+          {% endif %}
+            
+            {% else %}
+            <a href="{% url 'account:signin' %}" class="btn btn-primary">Login to see match</a>
+            {% endif %}
+            
             <ul class="tags">
               {% for tag in job.tags.all %}
               <li>
@@ -67,6 +110,31 @@
         {% endfor %}
 
         <a class="text-uppercase loadmore-btn mx-auto d-block" href="category.html">Load More job Posts</a>
+
+        {% comment %} <ul class="pagination justify-content-center">
+          {% if page.has_previous %}
+              <li class="page-item">
+                  <a class="page-link" href="?page=1">First</a>
+              </li>
+              <li class="page-item">
+                  <a class="page-link" href="?page={{ page.previous_page_number }}">Previous</a>
+              </li>
+          {% endif %}
+      
+          <li class="page-item disabled">
+              <span class="page-link">Page {{ page.number }} of {{ page.paginator.num_pages }}</span>
+          </li>
+      
+          {% if page.has_next %}
+              <li class="page-item">
+                  <a class="page-link" href="?page={{ page.next_page_number }}">Next</a>
+              </li>
+              <li class="page-item">
+                  <a class="page-link" href="?page={{ page.paginator.num_pages }}">Last</a>
+              </li>
+          {% endif %}
+      </ul> {% endcomment %}
+      
 
       </div>
       {% include 'sidebar.html' with jobs=jobs categories=categories locations=locations tags=tags %}

@@ -22,9 +22,18 @@
 <!-- Start contact-page Area -->
 <section class="contact-page-area section-gap">
   <div class="container">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} my-3">
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
     <div class="row">
       <div class="col-lg-12">
-        <form class="form-area " id="myForm" action="#" method="post" class="contact-form text-center">
+        <form class="form-area" action="{% url 'core:contact' %}" method="post" class="contact-form text-center">
+          {% csrf_token %}
           <div class="row">
             <div class="col-lg-12 form-group">
               <input name="name" placeholder="Enter your name" onfocus="this.placeholder = ''"
@@ -41,7 +50,7 @@
                 type="text">
               <textarea class="common-textarea mt-10 form-control" name="message" placeholder="Messege"
                 onfocus="this.placeholder = ''" onblur="this.placeholder = 'Messege'" required=""></textarea>
-              <button class="primary-btn mt-20 text-white" style="float: right;">Send Message</button>
+              <button class="primary-btn mt-20 text-white" style="float: right;" type="submit">Send Message</button>
               <div class="mt-20 alert-msg" style="text-align: left;"></div>
             </div>
           </div>

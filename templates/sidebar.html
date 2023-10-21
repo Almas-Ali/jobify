@@ -2,11 +2,15 @@
 
 <div class="col-lg-4 sidebar">
     <div class="single-slidebar">
+      {% if request.resolver_match.url_name == 'search' %}
+      <h4>Filter by Location</h4>
+      {% else %}
       <h4>Jobs by Location</h4>
+      {% endif %}
       <ul class="cat-list">
         {% for location in locations %}
         <li>
-          <a class="justify-content-between d-flex" href="category.html">
+          <a class="justify-content-between d-flex" href="/search/?q={{ location.name }}">
             <p>
               {{ location.name }}
             </p>
@@ -20,11 +24,50 @@
     </div>
 
     <div class="single-slidebar">
+      {% if request.resolver_match.url_name == 'search' %}
+      <h4>Filter by Category</h4>
+      {% else %}
+      <h4>Jobs by Category</h4>
+      {% endif %}
+      <ul class="cat-list">
+        {% for category in categories %}
+        <li>
+          <a class="justify-content-between d-flex" href="/search/?q={{ category.name }}">
+            <p>
+              {{ category.name }}
+            </p>
+            <span>
+              {{ category.job_category.count }}
+            </span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    {% if request.resolver_match.url_name == 'search' %}
+    <div class="single-slidebar">
+      <h4>Filter by Salary</h4>
+      <ul class="cat-list">
+        {% for salary in salaries %}
+        <li>
+          <a class="justify-content-between d-flex" href="/search/?q={{ salary }}">
+            <p>
+              {{ salary }} Tk
+            </p>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>    
+    {% endif %}
+
+    <div class="single-slidebar">
       <h4>Top rated job posts</h4>
       <div class="active-relatedjob-carusel">
         <div class="single-rated">
           <img class="img-fluid" src="{% static 'core/img/r1.jpg' %}" alt="">
-          <a href="single.html">
+          <a href="#">
             <h4>Creative Art Designer</h4>
           </a>
           <h6>Premium Labels Limited</h6>
@@ -39,7 +82,7 @@
         </div>
         <div class="single-rated">
           <img class="img-fluid" src="{% static 'core/img/r1.jpg' %}" alt="">
-          <a href="single.html">
+          <a href="#">
             <h4>Creative Art Designer</h4>
           </a>
           <h6>Premium Labels Limited</h6>
@@ -54,7 +97,7 @@
         </div>
         <div class="single-rated">
           <img class="img-fluid" src="{% static 'core/img/r1.jpg' %}" alt="">
-          <a href="single.html">
+          <a href="#">
             <h4>Creative Art Designer</h4>
           </a>
           <h6>Premium Labels Limited</h6>
@@ -71,28 +114,10 @@
     </div>
 
     <div class="single-slidebar">
-      <h4>Jobs by Category</h4>
-      <ul class="cat-list">
-        {% for category in categories %}
-        <li>
-          <a class="justify-content-between d-flex" href="category.html">
-            <p>
-              {{ category.name }}
-            </p>
-            <span>
-              {{ category.job_category.count }}
-            </span>
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-
-    <div class="single-slidebar">
       <h4>Carrer Advice Blog</h4>
       <div class="blog-list">
         <div class="single-blog" style="background:#000 url({% static 'core/img/blog1.jpg' %});">
-          <a href="single.html">
+          <a href="#">
             <h4>Home Audio Recording <br>
               For Everyone</h4>
           </a>
@@ -109,7 +134,7 @@
           </div>
         </div>
         <div class="single-blog " style="background:#000 url({% static 'core/img/blog2.jpg' %});">
-          <a href="single.html">
+          <a href="#">
             <h4>Home Audio Recording <br>
               For Everyone</h4>
           </a>
@@ -126,7 +151,7 @@
           </div>
         </div>
         <div class="single-blog " style="background:#000 url({% static 'core/img/blog1.jpg' %});">
-          <a href="single.html">
+          <a href="#">
             <h4>Home Audio Recording <br>
               For Everyone</h4>
           </a>

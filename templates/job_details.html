@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load job_tags %}
 {% block title %}Job Details{% endblock title %}
 
 
@@ -42,7 +43,21 @@
                             </div>
                             <ul class="btns">
                                 <li><a href="#"><span class="lnr lnr-heart"></span></a></li>
-                                <li><a href="#">Apply</a></li>
+                                {% if job.is_closed %}
+                                <li><a href="#" class="genric-btn danger circle arrow">Closed</a></li>
+                                {% else %}
+                                
+                                {% if request.user.is_applicant %}
+                                
+                                    {% if request.user|is_applied:job %}
+                                    <li><a href="javascript:void(0);" class="genric-btn success circle arrow">Applied</a></li>
+                                    
+                                    {% else %}
+                                    <li><a href="{% url 'core:apply' job.slug %}" class="genric-btn info circle arrow">Apply</a></li>
+                                    {% endif %}
+                                {% endif %}
+
+                                {% endif %}
                             </ul>
                         </div>
                         <p>
@@ -57,6 +72,35 @@
                             <span class="lnr lnr-database"></span>
                             {{ job.salary }}
                         </p>
+                        <p class="address"><i class="fa fa-clock-o"></i>
+                          {{ job.created_at|timesince }} ago
+                        </p>
+                        <p class="address"><i class="fa fa-eye"></i>
+                          {{ job.views }}
+                        </p>
+                        <ul class="skills">
+                          Skills:
+                          {% for skill in job.skills.all %}
+                          <li>
+                            <span class="lnr lnr-tag"></span>
+                            <a href="#">{{ skill.name }}</a>
+                          </li>
+                          {% endfor %}
+                        </ul>
+                        {% if request.user.is_authenticated %}
+                        
+                        {% if request.user.is_applicant %}
+                        Matches {{ matches }}%
+                        {% if matches >= 90 %}<strong class="text-uppercase">(Recommended)</strong>{% endif %}
+                        <div class="progress">
+                          <div class="progress-bar" role="progressbar" style="width: {{ matches }}%;" aria-valuenow="{{ matches }}" aria-valuemin="0" aria-valuemax="100">{{ matches }}%</div>
+                        </div>
+                      {% endif %}
+                        
+                        {% else %}
+                        <a href="{% url 'account:signin' %}" class="btn btn-primary">Login to see match</a>
+                        {% endif %}
+
                         <ul class="tags">
                             {% for tag in job.tags.all %}
                             <li>

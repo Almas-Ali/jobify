@@ -9,9 +9,12 @@
     <div class="d-flex align-items-center ms-4 mb-4">
       <div class="position-relative">
         {% if request.user.image %}
-          <img class="rounded-circle" src="{{ request.user.image.url }}" alt="{{ request.user.username }}" style="width: 40px; height: 40px;">
+        <img class="rounded-circle" src="{{ request.user.image.url }}" alt="{{ request.user.username }}"
+          style="width: 40px; height: 40px;">
         {% else %}
-          <img class="rounded-circle" src="https://ui-avatars.com/api/?name={{ request.user.get_full_name }}&amp;size=200&amp;rounded=true&amp;color=fff&amp;background=fc6369" alt="{{ request.user.username }}" style="width: 40px; height: 40px;">
+        <img class="rounded-circle"
+          src="https://ui-avatars.com/api/?name={{ request.user.get_full_name }}&amp;size=200&amp;rounded=true&amp;color=fff&amp;background=fc6369"
+          alt="{{ request.user.username }}" style="width: 40px; height: 40px;">
         {% endif %}
         <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
         </div>
@@ -142,6 +145,16 @@
             <i class="fa fa-plus me-2"></i>
             Post a Job
           </a>
+          {% if request.user.is_admin %}
+          <a href="{% url 'employeer:approve_jobs' %}" class="dropdown-item
+          {% if request.resolver_match.url_name == 'approve_jobs' %}
+          active
+          {% endif %}
+          ">
+            <i class="fas fa-hourglass-end me-2"></i>
+            Approve Jobs
+          </a>
+          {% endif %}
           <a href="{% url 'employeer:jobs' %}" class="dropdown-item
           {% if request.resolver_match.url_name == 'jobs' %}
           active
@@ -158,8 +171,7 @@
             <i class="fa fa-list me-2"></i>
             Locations
           </a>
-          <a href="{% url 'employeer:tags' %}" class="dropdown-item
-          {% if request.resolver_match.url_name == 'tags' %}
+          <a href="{% url 'employeer:tags' %}" class="dropdown-item {% if request.resolver_match.url_name == 'tags' %}
           active
           {% endif %}
           ">
@@ -172,22 +184,15 @@
 
       {% if request.user.is_applicant %}
       <div class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+        <a href="#" class="nav-link dropdown-toggle {% if request.resolver_match.url_name == 'sent_applications' %} active {% endif %}
+        " data-bs-toggle="dropdown">
           <i class="fa fa-envelope me-2"></i>
           Applications
         </a>
         <div class="dropdown-menu bg-transparent border-0">
-          <a href="#" class="dropdown-item">
+          <a href="{% url 'applicant:sent_applications' %}" class="dropdown-item {% if request.resolver_match.url_name == 'sent_applications' %} active {% endif %}">
             <i class="fa fa-plus me-2"></i>
             Sent Applications
-          </a>
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-times me-2"></i>
-            Rejected Applications
-          </a>
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-list me-2"></i>
-            All Applications
           </a>
         </div>
       </div>
