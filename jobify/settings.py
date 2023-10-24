@@ -34,6 +34,9 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,7 +50,16 @@ INSTALLED_APPS = [
     'employeer',
     'applicant',
     'job',
+    'message',
 ]
+
+ASGI_APPLICATION = 'jobify.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 AUTH_USER_MODEL = 'account.User'
 LOGIN_URL = 'account:signin'
@@ -101,7 +113,7 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'jobify',                      
+#         'NAME': 'jobify',
 #         'USER': 'root',
 #         'PASSWORD': '0000',
 #         'HOST': '',

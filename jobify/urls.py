@@ -26,6 +26,7 @@ urlpatterns = [
     path('employeer/', include('employeer.urls')),
     path('applicant/', include('applicant.urls')),
     path('accounts/', include('account.urls')),
+    path('message/', include('message.urls')),
 ]
 
 if settings.DEBUG:

@@ -10,14 +10,34 @@
       </div>
       {% endfor %}
       {% endif %}
-      <div class="banner-content col-lg-8 text-center">
+      <div class="banner-content col-lg-12 text-center">
         <h1 class="text-white">
           <span>1500+</span> Jobs posted last week
         </h1>
         <form action="{% url 'core:search' %}" class="serach-form-area" method="get">
           <div class="row justify-content-center form-wrap">
-            <div class="col-lg-10 form-cols">
+            <div class="col-lg-4 form-cols">
               <input type="text" class="form-control" name="q" placeholder="what are you looging for?">
+            </div>
+            <div class="col-lg-3 form-cols">
+              <div class="default-select" id="default-selects">
+                <select name="category">
+                  <option value="all">All Categories</option>
+                  {% for category in categories %}
+                  <option value="{{ category.slug }}">{{ category.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-3 form-cols">
+              <div class="default-select" id="default-selects2">
+                <select name="location">
+                  <option value="all">All Locations</option>
+                  {% for location in locations %}
+                  <option value="{{ location.slug }}">{{ location.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
             </div>
             <div class="col-lg-2 form-cols">
               <button type="submit" class="btn btn-info">

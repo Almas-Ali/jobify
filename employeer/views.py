@@ -75,7 +75,7 @@ class EditJobView(LoginRequiredMixin, UpdateView):
     model = Job
     form_class = JobForm
     template_name = 'employeer/edit_job.html'
-    
+
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, {
             'form': JobForm(instance=self.get_object()),
@@ -91,7 +91,7 @@ class EditJobView(LoginRequiredMixin, UpdateView):
         else:
             messages.error(request, 'Job update failed')
             return render(request, self.template_name, {'form': form})
- 
+
 
 class LocationsView(LoginRequiredMixin, TemplateView):
     model = Location
@@ -145,8 +145,14 @@ class ApplicationsView(LoginRequiredMixin, ListView):
     template_name = 'employeer/applications.html'
 
     def get(self, request, *args, **kwargs):
+        if request.GET.get('job_id'):
+            job = Job.objects.get(pk=request.GET.get('job_id'))
+            application = Application.objects.filter(job=job)
+        else:
+            application = Application.objects.filter(job__employer=request.user)
+        
         return render(request, 'employeer/applications.html', {
-            'applications': Application.objects.filter(job__employer=request.user).exclude(status='rejected')
+            'applications': application
         })
 
 

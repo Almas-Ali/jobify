@@ -50,6 +50,15 @@
         <i class="fa fa-tachometer-alt me-2"></i>
         Dashboard
       </a>
+      <a href="{% url 'message:message_list' %}" class="nav-item nav-link
+      {% if request.resolver_match.url_name == 'message_list' %}
+      active
+      {% endif %}
+      ">
+        <i class="fa fa-envelope me-2"></i>
+        Messages
+      </a>
+      
       {% if request.user.is_employer %}
       <div class="nav-item dropdown">
         <a href="#" class="nav-link dropdown-toggle

@@ -1,5 +1,6 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
+{% load employeer_tags %}
 {% block title %}Jobs{% endblock title %}
 {% block styles %}
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
@@ -28,8 +29,9 @@
         <th>Experience</th>
         <th>Company</th>
         <th>Location</th>
-        <th>Tags</th>
+        <!-- <th>Tags</th> -->
         <th>Total Views</th>
+        <th>Total Applications</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -42,12 +44,13 @@
         <td>{{ job.experience }}</td>
         <td>{{ job.company.name }}</td>
         <td>{{ job.location.name }}</td>
-        <td>
+        <!-- <td>
           {% for tag in job.tags.all %}
           <span class="badge bg-primary">{{ tag.name }}</span>
           {% endfor %}
-        </td>
+        </td> -->
         <td>{{ job.views }}</td>
+        <td>{{ job.id|get_applicants_count }}</td>
         <td>
           <div class="d-flex">
             <div class="m-1">
@@ -89,13 +92,11 @@
                       <p><strong>Posted On: </strong> {{ job.created_at }}</p>
                       <p><strong>Views: </strong> {{ job.views }}</p>
                       <p>
-                        <strong>Applicants: </strong> {{ job.applicants.count }}
+                        <strong>Applicants: </strong> {{ job.id|get_applicants_count }}
                       </p>
                       <p>
-                        <strong>Applicants: </strong>
-                        {% for applicant in job.applicants.all %}
-                        <span class="badge bg-primary">{{ applicant.user.username }}</span>
-                        {% endfor %}
+                        <strong>Applications: </strong> 
+                        <a href="{% url 'employeer:applications' %}?job_id={{ job.id }}" class="btn btn-sm btn-primary">Check</a>
                       </p>
                       <p>
                         <strong>Is Published: </strong> {{ job.is_published }}

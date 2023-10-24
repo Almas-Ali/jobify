@@ -18,15 +18,21 @@
                       alt="profile image" class="rounded-circle" width="200px" height="200px">
                     {% endif %}
                     <div class="row text-center my-2">
-                        <div class="col-md-12">
-                            <a href="#" class="btn btn-primary btn-block">Edit
+                        <div class="col-md-6">
+                            <a href="#" class="btn btn-sm btn-primary btn-block">Edit
                                 Profile</a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="#" class="btn btn-sm btn-primary btn-block">
+                                Send Message
+                            </a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-9">
                     <div class="profile-head">
-                        <h5>{{ request.user.username }}</h5>
+                        <h3>{{ request.user.get_full_name }}</h3>
+                        <h6>@{{ request.user.username }}</h6>
                         <h6>{{ request.user.email }}</h6>
                         <p class="proile-rating">RANKINGS : <span>8/10</span></p>
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -61,13 +67,15 @@
 
                         {% if request.user.is_applicant %}
                         <p>SKILLS</p>
-                        <a href="">{{ request.user.skills }}</a>
+                        {% for skill in request.user.skills.all %}
+                        <a href="#" class="text-muted">{{ skill }}</a>
+                        {% endfor %}
                         {% endif %}
 
                         <p>INTERESTED IN</p>
-                        {% for job in request.user.interested_in.all %}
-                        <a href="#" class="text-muted">{{ job.title }}</a>
-                        {% endfor %}
+                        <a href="#" class="text-muted">
+                            {{ request.user.interested_in }}
+                        </a><br>
                     </div>
                 </div>
                 <div class="col-md-8">

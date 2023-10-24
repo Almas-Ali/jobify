@@ -42,9 +42,9 @@ class HomeView(TemplateView):
                 is_approved=True
             )
 
-        context['categories'] = Category.objects.all()[:5]
-        context['locations'] = Location.objects.all()[:5]
-        context['tags'] = Tag.objects.all().order_by('-created_at')[:5]
+        context['categories'] = Category.objects.all()
+        context['locations'] = Location.objects.all()
+        context['tags'] = Tag.objects.all().order_by('-created_at')
 
         if self.request.user.is_authenticated and \
                 self.request.user.is_applicant:
@@ -78,20 +78,37 @@ class ContactView(TemplateView):
 class SearchView(TemplateView):
     template_name = 'search.html'
 
-    def get_context_data(self, **kwargs):
+    def get(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['jobs'] = Job.objects.filter(
-            Q(title__icontains=self.request.GET.get('q')) |
-            Q(short_description__icontains=self.request.GET.get('q')) |
-            Q(description__icontains=self.request.GET.get('q')) |
-            Q(company__name__icontains=self.request.GET.get('q')) |
-            Q(salary__icontains=self.request.GET.get('q')) |
-            Q(category__name__icontains=self.request.GET.get('q')) |
-            Q(location__name__icontains=self.request.GET.get('q')) |
-            Q(tags__name__icontains=self.request.GET.get('q'))
-        ).exclude(
-            Q(is_closed=True) | Q(is_approved=False)
-        ).distinct()
+        
+        if self.request.GET.get('category') != 'all' or \
+                self.request.GET.get('location') != 'all':
+            context['jobs'] = Job.objects.filter(
+                Q(title__icontains=self.request.GET.get('q')) |
+                Q(short_description__icontains=self.request.GET.get('q')) |
+                Q(description__icontains=self.request.GET.get('q')) |
+                Q(company__name__icontains=self.request.GET.get('q')) |
+                Q(salary__icontains=self.request.GET.get('q')) |
+                Q(category__name__icontains=self.request.GET.get('category')) |
+                Q(location__name__icontains=self.request.GET.get('location')) |
+                Q(tags__name__icontains=self.request.GET.get('q'))
+            ).exclude(
+                Q(is_closed=True) | Q(is_approved=False)
+            ).distinct()
+
+        else:
+            context['jobs'] = Job.objects.filter(
+                Q(title__icontains=self.request.GET.get('q')) |
+                Q(short_description__icontains=self.request.GET.get('q')) |
+                Q(description__icontains=self.request.GET.get('q')) |
+                Q(company__name__icontains=self.request.GET.get('q')) |
+                Q(salary__icontains=self.request.GET.get('q')) |
+                Q(category__name__icontains=self.request.GET.get('q')) |
+                Q(location__name__icontains=self.request.GET.get('q')) |
+                Q(tags__name__icontains=self.request.GET.get('q'))
+            ).exclude(
+                Q(is_closed=True) | Q(is_approved=False)
+            ).distinct()
 
         context['jobs'] = Paginator(context['jobs'], 10)
         if self.request.GET.get('page'):
@@ -137,7 +154,7 @@ class SearchView(TemplateView):
             'count': context['jobs'].paginator.count,
         }
 
-        return context
+        return render(self.request, self.template_name, context)
 
 
 class JobDetailView(TemplateView):
