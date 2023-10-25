@@ -13,7 +13,7 @@
           style="width: 40px; height: 40px;">
         {% else %}
         <img class="rounded-circle"
-          src="https://ui-avatars.com/api/?name={{ request.user.get_full_name }}&amp;size=200&amp;rounded=true&amp;color=fff&amp;background=fc6369"
+          src="https://ui-avatars.com/api/?name={{ request.user.get_full_name }}&amp;size=200&amp;rounded=true&amp;color=fff&amp;background=random"
           alt="{{ request.user.username }}" style="width: 40px; height: 40px;">
         {% endif %}
         <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
@@ -50,6 +50,15 @@
         <i class="fa fa-tachometer-alt me-2"></i>
         Dashboard
       </a>
+      <a href="{% url 'message:message_list' %}" class="nav-item nav-link
+      {% if request.resolver_match.url_name == 'message_list' %}
+      active
+      {% endif %}
+      ">
+        <i class="fa fa-envelope me-2"></i>
+        Messages
+      </a>
+      
       {% if request.user.is_employer %}
       <div class="nav-item dropdown">
         <a href="#" class="nav-link dropdown-toggle

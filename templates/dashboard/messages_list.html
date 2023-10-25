@@ -1,0 +1,61 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}Messages{% endblock title %}
+{% block styles %}
+
+{% endblock styles %}
+{% block scripts %}
+<script>
+  {% comment %} let url = "ws://{{ request.get_host }}/ws/message/";
+  const wb = new WebSocket(url);
+
+  wb.onmessage = function (event) {
+    let data = JSON.parse(event.data);
+    console.log('data: ', data);
+  };
+
+  let form = document.getElementById('mform');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    let message = document.querySelector('input[name="message"]').value;
+    wb.send(JSON.stringify({
+      'message': message
+    }));
+  }); {% endcomment %}
+</script>
+{% endblock scripts %}
+{% block content %}
+
+
+{% for user in users %}
+<div class="card m-3 rounded">
+  <div class="card-body row col-md-8">
+    <div class="col-md-2">
+      {% if user.image %}
+      <img src="{{ user.image.url }}" alt="profile image" class="rounded-circle" width="90px" height="90px">
+      {% else %}
+      <img
+        src="https://ui-avatars.com/api/?name={{ request.user.get_full_name }}&amp;size=200&amp;rounded=true&amp;color=fff&amp;background=random"
+        alt="profile image" class="rounded-circle" width="90px" height="90px">
+      {% endif %}
+    </div>
+    <div class="col-md-10">
+      <h5 class="card-title">{{ user.get_full_name }}</h5>
+      <p class="card-text">{{ user.email }}</p>
+      <a href="{% url 'message:message_detail' user.id %}" class="btn btn-primary">Message</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% if request.user.is_employer %}
+
+{% endif %}
+
+{% if request.user.is_applicant %}
+
+{% endif %}
+
+
+
+{% endblock content %}

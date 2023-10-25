@@ -15,4 +15,5 @@ urlpatterns = [
 
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
+    path('profile/edit/', views.ProfileEditView.as_view(), name='edit_profile'),
 ]

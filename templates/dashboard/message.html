@@ -1,0 +1,166 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}Message{% endblock title %}
+{% block styles %}
+
+{% endblock styles %}
+{% block scripts %}
+<script>
+  // let url = "ws://{{ request.get_host }}/ws/message/";
+  // const wb = new WebSocket(url);
+
+  // wb.onmessage = function (event) {
+  //   let data = JSON.parse(event.data);
+  //   console.log('data: ', data);
+  // };
+
+  // let form = document.getElementById('mform');
+  // form.addEventListener('submit', function (e) {
+  //   e.preventDefault();
+  //   let message = document.querySelector('input[name="message"]').value;
+  //   wb.send(JSON.stringify({
+  //     'message': message
+  //   }));
+  // });
+
+
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const chatContainer = document.getElementById('chat-container');
+    const chatMessages = document.getElementById('chat-messages');
+    const messageInput = document.getElementById('message-input');
+    const sendButton = document.getElementById('send-button');
+    const RECEIVER_USER_ID = `{{ receiver.id }}`;  // Replace with the receiver user's ID
+
+    // Connect to the WebSocket
+    const socket = new WebSocket('ws://{{ request.get_host }}/ws/message/{{ receiver.id }}/');
+
+    socket.onopen = function (event) {
+      // WebSocket connection opened
+      // console.log(event.data);
+      console.log('WebSocket connection opened');
+      socket.send(JSON.stringify({
+        receiver_id: RECEIVER_USER_ID  // Replace with the receiver user's ID
+      }));
+    };
+
+    // socket.onmessage = function (event) {
+    //   // Handle incoming messages from the WebSocket
+    //   const data = JSON.parse(event.data);
+    //   displayMessage(data.sender_id, data.message, data.timestamp);
+    // };
+    socket.onmessage = function (event) {
+      const data = JSON.parse(event.data);
+
+      console.log('data: ', data);
+
+      // Check if the received message has a 'messages' property
+      if (data.messages) {
+        displayMessageHistory(data.messages);
+      } else {
+        displayMessage(data.sender, data.message, data.timestamp);
+      }
+    };
+
+    socket.onclose = function (event) {
+      // WebSocket connection closed
+      console.log('WebSocket connection closed');
+    };
+
+    // Send a message when the "Send" button is clicked
+    sendButton.addEventListener('click', function () {
+      const message = messageInput.value;
+      if (message.trim() !== '') {
+        socket.send(JSON.stringify({
+          message: message,
+          receiver_id: RECEIVER_USER_ID  // Replace with the receiver user's ID
+        }));
+        messageInput.value = '';
+      }
+    });
+
+    function displayMessageHistory(messages) {
+      // Display the message history on initial connection
+      messages.forEach(message => {
+        displayMessage(message.sender, message.message, message.timestamp);
+      });
+    }
+
+    // Function to display a message
+    function displayMessage(sender_name, message, timestamp) {
+      const messageDiv = document.createElement('div');
+      messageDiv.innerHTML = `
+          <div class="card p-3">
+            <div class="card-header d-flex flex-row">
+              <div class="mx-2">
+                ${sender_name === '{{ request.user.get_full_name }}'
+                  ? `{% if sender.image %}
+                        <img class="rounded-circle" src="{{ sender.image.url }}" alt="{{ sender.username }}"
+                          style="width: 50px; height: 50px;">
+                      {% else %}
+                        <img class="rounded-circle"
+                          src="https://ui-avatars.com/api/?name={{ sender.get_full_name }}&size=200&rounded=true&color=fff&background=random"
+                          alt="{{ sender.username }}" style="width: 50px; height: 50px;">
+                      {% endif %}`
+                  : `{% if receiver.image %}
+                        <img class="rounded-circle" src="{{ receiver.image.url }}" alt="{{ receiver.username }}"
+                          style="width: 50px; height: 50px;">
+                      {% else %}
+                        <img class="rounded-circle"
+                          src="https://ui-avatars.com/api/?name={{ receiver.get_full_name }}&size=200&rounded=true&color=fff&background=random"
+                          alt="{{ receiver.username }}" style="width: 50px; height: 50px;">
+                      {% endif %}`
+                }
+              </div>
+              <div class="d-flex flex-column">
+                <h4 class="card-title">${sender_name}</h4>
+                <small class="card-text">${timestamp}</small>
+              </div>
+            </div>
+            <div class="card-body">
+              <p class="card-text container ml-5">${message}</p>
+            </div>
+          </div>
+        `;
+
+      chatMessages.appendChild(messageDiv);
+    }
+
+  });
+
+</script>
+{% endblock scripts %}
+{% block content %}
+
+<div class="col-md-12 p-3">
+  <div class="card">
+    <div class="card-header">
+      <h4 class="card-title">Message</h4>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div id="chat-container">
+            <div id="chat-messages"></div>
+            <div id="chat-controls form-group">
+              <input type="text" id="message-input" placeholder="Enter your message..." class="form-control my-2">
+              <button id="send-button" type="submit" class="btn btn-sm btn-primary">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if request.user.is_employer %}
+
+{% endif %}
+
+{% if request.user.is_applicant %}
+
+{% endif %}
+
+
+
+{% endblock content %}
