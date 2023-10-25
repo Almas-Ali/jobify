@@ -18,15 +18,15 @@
                       alt="profile image" class="rounded-circle" width="200px" height="200px">
                     {% endif %}
                     <div class="row text-center my-2">
-                        <div class="col-md-6">
-                            <a href="#" class="btn btn-sm btn-primary btn-block">Edit
+                        <div class="col-md-12">
+                            <a href="{% url 'core:edit_profile' %}" class="btn btn-sm btn-primary btn-block">Edit
                                 Profile</a>
                         </div>
-                        <div class="col-md-6">
+                        {% comment %} <div class="col-md-6">
                             <a href="#" class="btn btn-sm btn-primary btn-block">
                                 Send Message
                             </a>
-                        </div>
+                        </div> {% endcomment %}
                     </div>
                 </div>
                 <div class="col-md-9">
@@ -73,84 +73,14 @@
                         {% endif %}
 
                         <p>INTERESTED IN</p>
-                        <a href="#" class="text-muted">
+                        <p class="btn btn-sm btn-outline-info">
                             {{ request.user.interested_in }}
-                        </a><br>
+                        </p><br>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="tab-content profile-tab" id="myTabContent">
-
-                        {% if request.user.is_employer %}
-                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Company Name</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>
-                                        {% for company in request.user.employer.user_companies %}
-                                        {{ company }}
-                                        {% endfor %}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Company Address</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{ request.user.employer.address }}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Company Phone</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{ request.user.employer.phone }}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Company Website</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{ request.user.employer.website }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        {% endif %}
-
-                        {% if request.user.is_applicant %}
-                        <div class="tab-pane fade show active" id="profile" role="tabpanel"
-                          aria-labelledby="profile-tab">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Skills</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{ request.user.skills }}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Education</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{ request.user.education }}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Experience</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{ request.user.experience }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        {% endif %}
+                        ...
                     </div>
                 </div>
             </div>

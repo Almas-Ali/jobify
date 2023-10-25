@@ -32,10 +32,10 @@
   <div class="card-body row col-md-8">
     <div class="col-md-2">
       {% if user.image %}
-      <img src="{{ request.user.image.url }}" alt="profile image" class="rounded-circle" width="90px" height="90px">
+      <img src="{{ user.image.url }}" alt="profile image" class="rounded-circle" width="90px" height="90px">
       {% else %}
       <img
-        src="https://ui-avatars.com/api/?name={{ request.user.get_full_name }}&amp;size=200&amp;rounded=true&amp;color=fff&amp;background=fc6369"
+        src="https://ui-avatars.com/api/?name={{ request.user.get_full_name }}&amp;size=200&amp;rounded=true&amp;color=fff&amp;background=random"
         alt="profile image" class="rounded-circle" width="90px" height="90px">
       {% endif %}
     </div>

@@ -8,8 +8,9 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from job.models import Job, Category, Location, Tag, Application
+from job.models import Job, Category, Location, Tag, Application, Company
 from employeer.forms import ApplicationForm
+from account.forms import UserUpdateForm
 
 
 def get_matches_persenatge(job, applicant):
@@ -80,7 +81,7 @@ class SearchView(TemplateView):
 
     def get(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+
         if self.request.GET.get('category') != 'all' or \
                 self.request.GET.get('location') != 'all':
             context['jobs'] = Job.objects.filter(
@@ -243,6 +244,34 @@ class ApplyView(TemplateView):
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/index.html'
 
+    def get_context_data(self, **kwargs):
+        if self.request.user.is_admin:
+            context = super().get_context_data(**kwargs)
+            context['total_jobs'] = Job.objects.all().count()
+            context['total_employeers'] = get_user_model().objects.filter(
+                is_employer=True).exclude(is_superuser=True).count()
+            context['total_applicants'] = get_user_model().objects.filter(
+                is_applicant=True).count()
+            context['total_applications'] = Application.objects.all().count()
+            context['total_companies'] = Company.objects.all().count()
+
+        elif self.request.user.is_employer:
+            context = super().get_context_data(**kwargs)
+
+            context['jobs'] = Job.objects.filter(
+                company=self.request.user.company).order_by('-created_at')
+            context['total_jobs'] = context['jobs'].count()
+            context['total_applications'] = Application.objects.filter(
+                job__in=context['jobs']).count()
+
+        elif self.request.user.is_applicant:
+            context = super().get_context_data(**kwargs)
+            context['applications'] = Application.objects.filter(
+                applicant=self.request.user).order_by('-created_at')
+            context['total_applications'] = context['applications'].count()
+
+        return context
+
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'account/profile.html'
@@ -251,3 +280,24 @@ class ProfileView(LoginRequiredMixin, TemplateView):
     #     context = super().get_context_data(**kwargs)
     #     context['user'] = get_user_model().objects.get(id=self.request.user.id)
     #     return context
+
+
+class ProfileEditView(LoginRequiredMixin, TemplateView):
+    template_name = 'account/edit_profile.html'
+
+    def get(self, *args, **kwargs):
+        context = {}
+        context['form'] = UserUpdateForm(instance=self.request.user)
+        return render(self.request, self.template_name, context)
+
+    def post(self, *args, **kwargs):
+        context = {}
+        context['form'] = UserUpdateForm(
+            self.request.POST, self.request.FILES, instance=self.request.user)
+        if context['form'].is_valid():
+            context['form'].save()
+            messages.success(
+                self.request, 'Your profile has been updated successfully')
+            return redirect('core:edit_profile')
+
+        return render(self.request, self.template_name, context)

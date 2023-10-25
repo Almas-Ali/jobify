@@ -3,56 +3,57 @@
 {% block title %}Dashboard{% endblock title %}
 {% block content %}
 
-  <!-- Sale & Revenue Start -->
-  <div class="container-fluid pt-4 px-4">
-    <div class="row g-4">
-      <div class="col-sm-6 col-xl-3">
-        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-          <i class="fa fa-chart-line fa-3x text-primary"></i>
-          <div class="ms-3">
-            <p class="mb-2">Today Sale</p>
-            <h6 class="mb-0">$1234</h6>
-          </div>
+
+{% if request.user.is_employer %}
+
+
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+    <div class="col-sm-6 col-xl-3">
+      <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+        <i class="fa fa-chart-line fa-3x text-primary"></i>
+        <div class="ms-3">
+          <p class="mb-2">Total Job Posts</p>
+          <h6 class="mb-0">{{ total_jobs }}</h6>
         </div>
       </div>
-      <div class="col-sm-6 col-xl-3">
-        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-          <i class="fa fa-chart-bar fa-3x text-primary"></i>
-          <div class="ms-3">
-            <p class="mb-2">Total Sale</p>
-            <h6 class="mb-0">$1234</h6>
-          </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+        <i class="fa fa-chart-bar fa-3x text-primary"></i>
+        <div class="ms-3">
+          <p class="mb-2">Total Employers</p>
+          <h6 class="mb-0">{{ total_employeers }}</h6>
         </div>
       </div>
-      <div class="col-sm-6 col-xl-3">
-        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-          <i class="fa fa-chart-area fa-3x text-primary"></i>
-          <div class="ms-3">
-            <p class="mb-2">Today Revenue</p>
-            <h6 class="mb-0">$1234</h6>
-          </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+        <i class="fa fa-chart-area fa-3x text-primary"></i>
+        <div class="ms-3">
+          <p class="mb-2">Total Applicants</p>
+          <h6 class="mb-0">{{ total_applicants }}</h6>
         </div>
       </div>
-      <div class="col-sm-6 col-xl-3">
-        <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-          <i class="fa fa-chart-pie fa-3x text-primary"></i>
-          <div class="ms-3">
-            <p class="mb-2">Total Revenue</p>
-            <h6 class="mb-0">$1234</h6>
-          </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+        <i class="fa fa-chart-pie fa-3x text-primary"></i>
+        <div class="ms-3">
+          <p class="mb-2">Total Applications</p>
+          <h6 class="mb-0">{{ total_applications }}</h6>
         </div>
       </div>
     </div>
   </div>
-  <!-- Sale & Revenue End -->
+</div>
 
-  {% if request.user.is_employer %}
 
-  {% endif %}
+{% endif %}
 
-  {% if request.user.is_applicant %}
+{% if request.user.is_applicant %}
 
-  {% endif %}
+{% endif %}
 
 
 
