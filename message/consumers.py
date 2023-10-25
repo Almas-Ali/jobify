@@ -12,6 +12,10 @@ class MessageConsumer(WebsocketConsumer):
     def connect(self):
         '''Connect to WebSocket'''
 
+        current_user_id = self.scope['user']
+        if current_user_id is None:
+            return
+
         current_user_id = self.scope['user'].id
         other_user_id = self.scope['url_route']['kwargs']['pk']
 
@@ -20,6 +24,7 @@ class MessageConsumer(WebsocketConsumer):
             if int(current_user_id) > int(other_user_id)
             else f'{other_user_id}_{current_user_id}'
         )
+        # self.room_name = 'test'
         self.room_group_name = f'chat_{self.room_name}'
         self.channel_layer.group_add(self.room_group_name, self.channel_name)
 
@@ -85,7 +90,9 @@ class MessageConsumer(WebsocketConsumer):
             'message': message,
             'timestamp': message_obj.created_at.strftime("%Y-%m-%d %H:%M:%S"),
             'sender': sender.get_full_name(),
-            'receiver': receiver.get_full_name()
+            'sender_id': sender.id,
+            'receiver': receiver.get_full_name(),
+            'receiver_id': receiver.id,
         })))
 
         # Send the message to the receiver (if they are connected)
@@ -100,7 +107,9 @@ class MessageConsumer(WebsocketConsumer):
             'message': message_obj.message,
             'timestamp': message_obj.created_at.strftime("%Y-%m-%d %H:%M:%S"),
             'sender': message_obj.sender.get_full_name(),
-            'receiver': message_obj.receiver.get_full_name()
+            'sender_id': message_obj.sender.id,
+            'receiver': message_obj.receiver.get_full_name(),
+            'receiver_id': message_obj.receiver.id,
         }
 
         # Send message to WebSocket

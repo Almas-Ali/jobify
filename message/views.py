@@ -27,6 +27,7 @@ class MessageView(TemplateView):
             Q(sender=self.kwargs['pk']) | Q(receiver=self.kwargs['pk'])
         )
         context['receiver'] = get_user_model().objects.get(id=self.kwargs['pk'])
+        context['sender'] = self.request.user
         return context
 
     def get_queryset(self):
