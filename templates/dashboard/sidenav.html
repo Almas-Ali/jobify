@@ -208,20 +208,20 @@
       {% endif %}
 
       <div class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+        <a href="#" class="nav-link dropdown-toggle {% if request.resolver_match == 'profile_settings' or request.resolver_match == 'change_password' or request.resolver_match == 'privacy_settings' %} active {% endif %}" data-bs-toggle="dropdown">
           <i class="fa fa-briefcase me-2"></i>
           Settings
         </a>
         <div class="dropdown-menu bg-transparent border-0">
-          <a href="#" class="dropdown-item">
+          <a href="{% url 'core:profile_settings' %}" class="dropdown-item {% if request.resolver_match == 'profile_settings' %} active {% endif %}">
             <i class="fa fa-user me-2"></i>
             Profile Settings
           </a>
-          <a href="#" class="dropdown-item">
+          <a href="{% url 'core:change_password' %}" class="dropdown-item {% if request.resolver_match == 'change_password' %} active {% endif %}">
             <i class="fa fa-key me-2"></i>
             Change Password
           </a>
-          <a href="#" class="dropdown-item">
+          <a href="{% url 'core:privacy_settings' %}" class="dropdown-item {% if request.resolver_match == 'privacy_settings' %} active {% endif %}">
             <i class="fa fa-cog me-2"></i>
             Privacy Settings
           </a>

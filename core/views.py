@@ -10,7 +10,7 @@ from django.shortcuts import redirect
 
 from job.models import Job, Category, Location, Tag, Application, Company
 from employeer.forms import ApplicationForm
-from account.forms import UserUpdateForm
+from account.forms import UserUpdateForm, PasswordChangeForm
 
 
 def get_matches_persenatge(job, applicant):
@@ -23,6 +23,21 @@ def get_matches_persenatge(job, applicant):
             matches += 1
     try:
         return matches / len(job_skills) * 100
+    except Exception as e:
+        return 0
+
+
+def rank_applicant(applicant):
+    '''Rank an applicant based on the number of matches'''
+    jobs = Job.objects.filter(is_approved=True).exclude(is_closed=True)
+    rank = 0
+    for job in jobs:
+        rank += get_matches_persenatge(job, applicant)
+        # print(get_matches_persenatge(job, applicant), rank)
+
+    # print(rank)
+    try:
+        return f'{rank / jobs.count():.2f}%'
     except Exception as e:
         return 0
 
@@ -247,19 +262,19 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         if self.request.user.is_admin:
             context = super().get_context_data(**kwargs)
-            context['total_jobs'] = Job.objects.all().count()
+            context['total_jobs'] = Job.objects.count()
             context['total_employeers'] = get_user_model().objects.filter(
                 is_employer=True).exclude(is_superuser=True).count()
             context['total_applicants'] = get_user_model().objects.filter(
                 is_applicant=True).count()
-            context['total_applications'] = Application.objects.all().count()
-            context['total_companies'] = Company.objects.all().count()
+            context['total_applications'] = Application.objects.count()
+            context['total_companies'] = Company.objects.count()
 
         elif self.request.user.is_employer:
             context = super().get_context_data(**kwargs)
 
             context['jobs'] = Job.objects.filter(
-                company=self.request.user.company).order_by('-created_at')
+                employer=self.request.user).order_by('-created_at')
             context['total_jobs'] = context['jobs'].count()
             context['total_applications'] = Application.objects.filter(
                 job__in=context['jobs']).count()
@@ -276,10 +291,11 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'account/profile.html'
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['user'] = get_user_model().objects.get(id=self.request.user.id)
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['user'] = get_user_model().objects.get(id=self.request.user.id)
+        # context['rank'] = rank_applicant(self.request.user)
+        return context
 
 
 class ProfileEditView(LoginRequiredMixin, TemplateView):
@@ -301,3 +317,36 @@ class ProfileEditView(LoginRequiredMixin, TemplateView):
             return redirect('core:edit_profile')
 
         return render(self.request, self.template_name, context)
+
+
+class SettingsView(LoginRequiredMixin, TemplateView):
+    template_name = 'account/settings.html'
+
+
+class ProfileSettingsView(LoginRequiredMixin, TemplateView):
+    template_name = 'account/profile_settings.html'
+
+
+class PasswordChangeView(LoginRequiredMixin, TemplateView):
+    template_name = 'account/change_password.html'
+
+    def get(self, *args, **kwargs):
+        context = {}
+        context['form'] = PasswordChangeForm(self.request.user)
+        return render(self.request, self.template_name, context)
+
+    def post(self, *args, **kwargs):
+        context = {}
+        context['form'] = PasswordChangeForm(
+            self.request.user, self.request.POST)
+        if context['form'].is_valid():
+            context['form'].save()
+            messages.success(
+                self.request, 'Your password has been changed successfully')
+            return redirect('core:change_password')
+
+        return render(self.request, self.template_name, context)
+
+
+class PrivacySettingsView(LoginRequiredMixin, TemplateView):
+    template_name = 'account/privacy_settings.html'

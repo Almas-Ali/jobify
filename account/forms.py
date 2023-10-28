@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
@@ -77,3 +77,38 @@ class UserUpdateForm(forms.ModelForm):
             'gender': forms.Select(attrs={'class': 'form-control my-2'}),
             'interested_in': forms.Select(attrs={'class': 'form-control my-2'}),
         }
+
+
+class PasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        label="Old Password",
+        widget=forms.PasswordInput(attrs={
+            'autocomplete': 'current-password',
+            'autofocus': True,
+            'class': 'form-control my-2',
+            'placeholder': 'Old Password',
+        }),
+        strip=False,
+    )
+    new_password1 = forms.CharField(
+        label="New Password",
+        widget=forms.PasswordInput(attrs={
+            'autocomplete': 'new-password',
+            'class': 'form-control my-2',
+            'placeholder': 'New Password',
+        }),
+        strip=False,
+    )
+    new_password2 = forms.CharField(
+        label="Confirm Password",
+        widget=forms.PasswordInput(attrs={
+            'autocomplete': 'new-password',
+            'class': 'form-control my-2',
+            'placeholder': 'Confirm Password',
+        }),
+        strip=False,
+    )
+
+    class Meta:
+        model = get_user_model()
+        fields = ['old_password', 'new_password1', 'new_password2']
