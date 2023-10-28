@@ -16,4 +16,9 @@ urlpatterns = [
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('profile/edit/', views.ProfileEditView.as_view(), name='edit_profile'),
+
+    path('settings/', views.SettingsView.as_view(), name='settings'),
+    path('settings/profile/', views.ProfileSettingsView.as_view(), name='profile_settings'),
+    path('settings/password/', views.PasswordChangeView.as_view(), name='change_password'),
+    path('settings/privacy/', views.PrivacySettingsView.as_view(), name='privacy_settings'),
 ]

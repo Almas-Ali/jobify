@@ -35,7 +35,7 @@
       <img src="{{ user.image.url }}" alt="profile image" class="rounded-circle" width="90px" height="90px">
       {% else %}
       <img
-        src="https://ui-avatars.com/api/?name={{ request.user.get_full_name }}&amp;size=200&amp;rounded=true&amp;color=fff&amp;background=random"
+        src="https://ui-avatars.com/api/?name={{ user.get_full_name }}&amp;size=200&amp;rounded=true&amp;color=fff&amp;background=random"
         alt="profile image" class="rounded-circle" width="90px" height="90px">
       {% endif %}
     </div>
