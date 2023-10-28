@@ -1,0 +1,36 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}Settings{% endblock title %}
+{% block styles %}
+<style>
+
+</style>
+{% endblock styles %}
+{% block scripts %}
+<script>
+
+</script>
+{% endblock scripts %}
+
+{% block content %}
+
+<div class="container">
+  <div class="card p-3 rounded">
+    <p>
+      <a href="{% url 'account:profile_settings' %}">Profile Settings</a>
+      <a href="{% url 'account:change_password' %}">Change Password</a>
+      <a href="{% url 'account:privacy_settings' %}">Privacy Settings</a>
+    </p>
+  </div>
+</div>
+{% if request.user.is_employer %}
+
+{% endif %}
+
+{% if request.user.is_applicant %}
+
+{% endif %}
+
+
+
+{% endblock content %}

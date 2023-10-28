@@ -1,0 +1,60 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}Settings{% endblock title %}
+{% block styles %}
+<style>
+
+</style>
+{% endblock styles %}
+{% block scripts %}
+<script>
+
+</script>
+{% endblock scripts %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="h3 text-center mb-4 text-gray-800">Profile Settings</h3>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <div class="card p-4">
+        <h5 class="h5">Notification Settings</h5>
+        <form action="#" method="post">
+            {% csrf_token %}
+            <div class="form-group my-3">
+                <label for="email_notifications">Email Notifications</label>
+                <select name="email_notifications" id="email_notifications" class="form-control">
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+            <div class="form-group my-3">
+                <label for="sms_notifications">SMS Notifications</label>
+                <select name="sms_notifications" id="sms_notifications" class="form-control">
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+{% if request.user.is_employer %}
+
+{% endif %}
+
+{% if request.user.is_applicant %}
+
+{% endif %}
+
+
+
+{% endblock content %}

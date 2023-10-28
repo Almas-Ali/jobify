@@ -1,0 +1,30 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}Settings{% endblock title %}
+{% block styles %}
+<style>
+
+</style>
+{% endblock styles %}
+{% block scripts %}
+<script>
+
+</script>
+{% endblock scripts %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="h3 text-center mb-4 text-gray-800">Privacy Settings</h3>
+</div>
+{% if request.user.is_employer %}
+
+{% endif %}
+
+{% if request.user.is_applicant %}
+
+{% endif %}
+
+
+
+{% endblock content %}
