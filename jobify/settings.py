@@ -15,20 +15,24 @@ import os
 
 from django.contrib.messages import constants as messages
 
+import envist
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load environment variables
+env = envist.Envist()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-z8c^c#ir7=d6(l+_j1rp@$-5%=0n*1d)&a$)r0r-!ikjv5mh+u'
+SECRET_KEY = env.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.get('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = env.get('ALLOWED_HOSTS', default=['*'], cast=list)
 
 
 # Application definition
@@ -169,11 +173,15 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-
 # Messages settings
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
+
+# Email settings
+EMAIL_BACKEND = env.get('EMAIL_BACKEND')
+EMAIL_HOST = env.get('EMAIL_HOST')
+EMAIL_PORT = env.get('EMAIL_PORT', cast=int)
+EMAIL_USE_TLS = env.get('EMAIL_USE_TLS', cast=bool)
+EMAIL_HOST_USER = env.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.get('EMAIL_HOST_PASSWORD')

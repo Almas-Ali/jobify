@@ -26,18 +26,19 @@ class MessageConsumer(WebsocketConsumer):
         )
         # self.room_name = 'test'
         self.room_group_name = f'chat_{self.room_name}'
-        self.channel_layer.group_add(self.room_group_name, self.channel_name)
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_group_name, self.channel_name
+        )
 
         # Accept the WebSocket connection
         self.accept()
         self.load_history()
-        
 
     def disconnect(self, close_code):
-        # Disconnect WebSocket
-        self.channel_layer.group_discard(
-            self.room_group_name, self.channel_name)
-        self.disconnect(close_code)
+        '''Disconnect from WebSocket'''
+        async_to_sync(self.channel_layer.group_discard)(
+            self.room_group_name, self.channel_name
+        )
         self.close()
 
     def load_history(self):
@@ -85,18 +86,9 @@ class MessageConsumer(WebsocketConsumer):
             message=message
         )
 
-        # Send the message to the sender
-        async_to_sync(self.send(text_data=json.dumps({
-            'message': message,
-            'timestamp': message_obj.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            'sender': sender.get_full_name(),
-            'sender_id': sender.id,
-            'receiver': receiver.get_full_name(),
-            'receiver_id': receiver.id,
-        })))
-
         # Send the message to the receiver (if they are connected)
         self.send_message_to_receiver(message_obj)
+
 
     def send_message_to_receiver(self, message_obj):
         '''Send message to the receiver if they are connected'''
@@ -113,7 +105,7 @@ class MessageConsumer(WebsocketConsumer):
         }
 
         # Send message to WebSocket
-        async_to_sync(self.channel_layer.send)(
+        async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             message_data
         )

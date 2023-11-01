@@ -27,20 +27,18 @@
 
     <div class="card p-4">
         <h5 class="h5">Notification Settings</h5>
-        <form action="#" method="post">
+        <form action="{% url 'core:profile_settings' %}" method="post">
             {% csrf_token %}
             <div class="form-group my-3">
-                <label for="email_notifications">Email Notifications</label>
-                <select name="email_notifications" id="email_notifications" class="form-control">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-            </div>
-            <div class="form-group my-3">
-                <label for="sms_notifications">SMS Notifications</label>
-                <select name="sms_notifications" id="sms_notifications" class="form-control">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
+                <label for="email_notification">Email Notifications</label>
+                <select name="email_notification" id="email_notification" class="form-control">
+                    {% if request.user.send_email_notification %}
+                    <option value="yes" selected>Yes</option>
+                    <option value="no">No</option>
+                    {% else %}
+                    <option value="yes">Yes</option>
+                    <option value="no" selected>No</option>
+                    {% endif %}
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
