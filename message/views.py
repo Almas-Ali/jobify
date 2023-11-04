@@ -7,7 +7,7 @@ from django.db.models import Q
 from message.models import Message
 
 
-class IndexView(TemplateView):
+class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/messages_list.html'
 
     def get_context_data(self, **kwargs):
@@ -17,7 +17,7 @@ class IndexView(TemplateView):
         return context
 
 
-class MessageView(TemplateView):
+class MessageView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/message.html'
 
     def get_context_data(self, **kwargs):

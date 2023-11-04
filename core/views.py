@@ -326,6 +326,24 @@ class SettingsView(LoginRequiredMixin, TemplateView):
 class ProfileSettingsView(LoginRequiredMixin, TemplateView):
     template_name = 'account/profile_settings.html'
 
+    def post(self, *args, **kwargs):
+        send_email_notification = self.request.POST.get('email_notification')
+
+        if send_email_notification == 'yes':
+            send_email_notification = True
+        else:
+            send_email_notification = False
+
+        user = get_user_model().objects.get(
+            id=self.request.user.id
+        )
+        user.send_email_notification = send_email_notification
+        user.save()
+
+        messages.success(
+            self.request, 'Your profile settings has been updated successfully')
+        return redirect('core:profile_settings')
+
 
 class PasswordChangeView(LoginRequiredMixin, TemplateView):
     template_name = 'account/change_password.html'

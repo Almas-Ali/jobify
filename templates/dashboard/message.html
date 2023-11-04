@@ -33,7 +33,8 @@
     const RECEIVER_USER_ID = `{{ receiver.id }}`;  // Replace with the receiver user's ID
 
     // Connect to the WebSocket
-    const socket = new WebSocket('ws://{{ request.get_host }}/ws/message/{{ receiver.id }}/');
+    const URL = 'ws://{{ request.get_host }}/ws/message/{{ receiver.id }}/';
+    const socket = new WebSocket(URL);
 
     socket.onopen = function (event) {
       // WebSocket connection opened
@@ -52,14 +53,13 @@
     socket.onmessage = function (event) {
       const data = JSON.parse(event.data);
 
-      console.log('data: ', data);
-
       // Check if the received message has a 'messages' property
       if (data.messages) {
         displayMessageHistory(data.messages);
       } else {
         displayMessage(data.sender, data.message, data.timestamp);
       }
+      
     };
 
     socket.onclose = function (event) {

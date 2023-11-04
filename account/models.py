@@ -52,6 +52,8 @@ class User(AbstractUser):
     is_applicant = models.BooleanField(default=False)
     is_suspend = models.BooleanField(default=False)
 
+    send_email_notification = models.BooleanField(default=True)
+
     objects = UserManager()
 
     USERNAME_FIELD = 'email'

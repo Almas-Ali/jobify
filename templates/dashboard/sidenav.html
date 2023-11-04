@@ -58,8 +58,7 @@
         <i class="fa fa-envelope me-2"></i>
         Messages
       </a>
-      
-      {% if request.user.is_employer %}
+      {% if request.user.is_admin %}
       <div class="nav-item dropdown">
         <a href="#" class="nav-link dropdown-toggle
         {% if request.resolver_match.url_name == 'applicants_list' %}
@@ -80,6 +79,8 @@
           </a>
         </div>
       </div>
+      {% endif %}
+      {% if request.user.is_employer %}      
       <div class="nav-item dropdown">
         <a href="#" class="nav-link dropdown-toggle
         {% if request.resolver_match.url_name == 'applications' or request.resolver_match.url_name == 'rejected_applications' %}
